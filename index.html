@@ -7,16 +7,16 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="حاسبة الرياضيات" />
-  <title>حاسبة الرياضيات الذكية المتقدمة | Smart Math AI PWA</title>
+  <title>حاسبة الرياضيات الذكية المتقدمة</title>
 
   <!-- أيقونة الويب المضمنة PWA Icon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50%' y='68%' font-size='55' font-weight='900' fill='white' text-anchor='middle' font-family='sans-serif'>∑</text></svg>" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50%' y='68%' font-size='55' font-weight='900' fill='white' text-anchor='middle' font-family='sans-serif'>∑</text></svg>" />
 
-  <!-- Web App Manifest مدمج بالكامل لتمكين التثبيت الفوري PWA -->
-  <link rel="manifest" href='data:application/manifest+json,{"name":"حاسبة الرياضيات الذكية","short_name":"Math AI","start_url":".","display":"standalone","background_color":"%23020617","theme_color":"%234f46e5","description":"تطبيق شامل للحساب العلمي والهندسة والإحصاء مع الذكاء الاصطناعي","icons":[{"src":"data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" rx=\"22\" fill=\"%234f46e5\"/><text x=\"50%\" y=\"68%\" font-size=\"55\" font-weight=\"900\" fill=\"white\" text-anchor=\"middle\" font-family=\"sans-serif\">∑</text></svg>","sizes":"512x512","type":"image/svg+xml"}]}' />
+  <!-- إعدادات التثبيت الفوري كـ تطبيق هاتف PWA -->
+  <link rel="manifest" href='data:application/manifest+json,{"name":"حاسبة الرياضيات الذكية","short_name":"حاسبة الرياضيات","start_url":".","display":"standalone","background_color":"%23020617","theme_color":"%234f46e5","description":"تطبيق شامل للحساب العلمي والهندسة والإحصاء مع الذكاء الاصطناعي","icons":[{"src":"data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" rx=\"22\" fill=\"%234f46e5\"/><text x=\"50%\" y=\"68%\" font-size=\"55\" font-weight=\"900\" fill=\"white\" text-anchor=\"middle\" font-family=\"sans-serif\">∑</text></svg>","sizes":"512x512","type":"image/svg+xml"}]}' />
 
-  <!-- خطوط تجوال و Fira Code -->
+  <!-- الخطوط الرسمية -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
@@ -50,11 +50,11 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
 
-  <!-- ==================== شريط تثبيت التطبيق السريع (PWA Banner) ==================== -->
+  <!-- ==================== شريط تثبيت التطبيق السريع ==================== -->
   <div id="pwa-top-banner" class="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 text-white px-3 py-1.5 text-xs font-bold flex items-center justify-between shadow-md">
     <div class="flex items-center gap-2 truncate">
       <i data-lucide="smartphone" class="w-4 h-4 flex-shrink-0 animate-bounce"></i>
-      <span class="truncate">ثبّت التطبيق على شاشتك الرئيسية للعمل بدون إنترنت وسرعة فائقة!</span>
+      <span class="truncate">ثبّت التطبيق على شاشتك الرئيسية للوصول السريع والعمل في أي وقت!</span>
     </div>
     <div class="flex items-center gap-1.5 flex-shrink-0">
       <button onclick="handlePWAInstallClick()" class="bg-white text-emerald-900 hover:bg-emerald-50 px-2.5 py-1 rounded-lg text-xs font-black shadow transition active:scale-95">تثبيت الآن</button>
@@ -62,7 +62,7 @@
     </div>
   </div>
 
-  <!-- ==================== 1. الشريط العلوي المتجاوب ==================== -->
+  <!-- ==================== 1. الشريط العلوي ==================== -->
   <header id="app-header" class="sticky top-0 z-40 w-full backdrop-blur-xl bg-slate-900/95 border-b border-slate-800/80 transition-colors shadow-sm">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 py-2">
       <div class="flex items-center justify-between gap-1 min-w-0">
@@ -82,7 +82,7 @@
         <!-- أزرار الإجراءات في الشريط العلوي (واضحة دون أي تداخل) -->
         <div class="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
           
-          <!-- 1. زر تنزيل / تثبيت التطبيق البارز دائماً على كل الهواتف -->
+          <!-- 1. زر تنزيل / تثبيت التطبيق البارز دائماً -->
           <button
             id="pwa-install-btn"
             onclick="handlePWAInstallClick()"
@@ -124,7 +124,7 @@
             <span id="history-count" class="w-4 h-4 rounded-full bg-indigo-600 text-white text-[9px] font-bold flex items-center justify-center leading-none">0</span>
           </button>
 
-          <!-- 5. زر الذكاء الاصطناعي (AI Assistant) -->
+          <!-- 5. زر الذكاء الاصطناعي (المساعد الذكي) -->
           <button
             onclick="openAIModal()"
             title="المساعد الذكي"
@@ -251,7 +251,7 @@
       </div>
     </section>
 
-    <!-- قسم 2: حل المعادلات الشامل (خطية، تربيعية، نظام معادلتين) -->
+    <!-- قسم 2: حل المعادلات الشامل -->
     <section id="view-equations" class="w-full max-w-xl bg-slate-900/95 border border-slate-800 p-5 rounded-3xl shadow-xl hidden">
       <div class="flex items-center justify-between mb-3">
         <h2 class="text-base font-bold text-white flex items-center gap-2">
@@ -432,7 +432,7 @@
   <div id="ai-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 hidden">
     <div class="bg-slate-900 border border-violet-500/40 w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
       
-      <!-- رأس النافذة -->
+      <!-- رأس النافذة الأنيق -->
       <div class="flex items-center justify-between px-4 py-3 bg-slate-950/70 border-b border-slate-800">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-violet-600 to-fuchsia-600 flex items-center justify-center shadow-md">
@@ -440,10 +440,10 @@
           </div>
           <div>
             <h3 class="font-bold text-white text-sm sm:text-base flex items-center gap-1.5">
-              <span>المساعد الرياضي الذكي (Math AI)</span>
-              <span class="text-[9px] px-1.5 py-0.2 rounded bg-violet-500/20 text-violet-300 border border-violet-500/30">Vercel API Ready</span>
+              <span>المساعد الرياضي الذكي</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">جاهز للمساعدة</span>
             </h3>
-            <p class="text-[11px] text-slate-400">شرح خطوة بخطوة بالذكاء الاصطناعي بدقة تامة</p>
+            <p class="text-[11px] text-slate-400">حلول رياضية دقيقة وشرح مبسط خطوة بخطوة</p>
           </div>
         </div>
         <button onclick="closeModal('ai-modal')" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
@@ -453,7 +453,7 @@
 
       <!-- أنماط التحليل السريعة -->
       <div class="p-3 bg-slate-950/40 border-b border-slate-800/80">
-        <span class="text-[11px] font-bold text-slate-400 block mb-1.5">أسلوب التحليل:</span>
+        <span class="text-[11px] font-bold text-slate-400 block mb-1.5">أسلوب التحليل والشرح:</span>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs">
           <button onclick="setAIMode('step_by_step')" id="aimode-step_by_step" class="aimode-btn p-1.5 rounded-xl font-bold bg-violet-600 text-white flex items-center justify-center gap-1">
             <i data-lucide="list-ordered" class="w-3.5 h-3.5"></i>
@@ -465,7 +465,7 @@
           </button>
           <button onclick="setAIMode('tips_and_tricks')" id="aimode-tips_and_tricks" class="aimode-btn p-1.5 rounded-xl font-medium bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1">
             <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i>
-            <span>حيل ونباهة</span>
+            <span>حيل ومهارات</span>
           </button>
           <button onclick="setAIMode('verify_solution')" id="aimode-verify_solution" class="aimode-btn p-1.5 rounded-xl font-medium bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1">
             <i data-lucide="check-check" class="w-3.5 h-3.5"></i>
@@ -477,7 +477,7 @@
       <!-- مساحة المحادثة والردود -->
       <div id="ai-chat-output" class="flex-1 overflow-y-auto p-4 space-y-3.5 text-sm min-h-[190px]">
         <div class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 text-slate-300 text-xs sm:text-sm leading-relaxed">
-          مرحباً بك! أنا مساعدك الرياضي الفائق. يمكنك كتابة أي مسألة رياضية، معادلة (مثل: <code class="text-indigo-400">x² - 5x + 6 = 0</code> أو <code class="text-indigo-400">sin(45)</code>)، وسأقوم بحلها وشرح خطواتها لك فوراً وبلسان عربي فصيح ودقيق.
+          أهلاً بك! أنا رفيقك الرياضي الذكي. اكتب أي مسألة رياضية، أو معادلة (مثل: <code class="text-indigo-400">x² - 5x + 6 = 0</code> أو <code class="text-indigo-400">sin(45)</code>)، وسأقوم بحلها وتفصيل خطواتها لك فوراً بلغة واضحة ومباشرة.
         </div>
       </div>
 
@@ -487,7 +487,7 @@
           <input
             type="text"
             id="ai-prompt-input"
-            placeholder="اكتب المسألة أو السؤال الرياضي هنا..."
+            placeholder="اكتب مسألتك أو سؤالك الرياضي هنا..."
             onkeydown="if(event.key === 'Enter') handleAISend();"
             class="flex-1 p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:outline-none focus:border-violet-500"
           />
@@ -503,13 +503,13 @@
     </div>
   </div>
 
-  <!-- ==================== 4. نافذة دليل تثبيت PWA للأجهزة المحمولة ==================== -->
+  <!-- ==================== 4. نافذة دليل تثبيت التطبيق على الهاتف ==================== -->
   <div id="pwa-guide-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-emerald-500/40 w-full max-w-md rounded-3xl p-5 shadow-2xl flex flex-col">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
         <h3 class="font-bold text-base flex items-center gap-2 text-white">
           <i data-lucide="download" class="w-5 h-5 text-emerald-400"></i>
-          <span>تثبيت التطبيق على الهاتف</span>
+          <span>تثبيت التطبيق على جهازك</span>
         </h3>
         <button onclick="closeModal('pwa-guide-modal')" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -517,7 +517,7 @@
       </div>
       <div class="py-4 space-y-3.5 text-sm text-slate-300 leading-relaxed" id="pwa-instructions"></div>
       <div class="pt-3 border-t border-slate-800 flex justify-end">
-        <button onclick="closeModal('pwa-guide-modal')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition">فهمت ذلك</button>
+        <button onclick="closeModal('pwa-guide-modal')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition">حسناً، فهمت</button>
       </div>
     </div>
   </div>
@@ -537,13 +537,13 @@
       <div id="history-list" class="flex-1 overflow-y-auto py-3 space-y-2 no-scrollbar min-h-[140px]"></div>
       <div class="pt-3 border-t border-slate-800 flex justify-between">
         <button onclick="clearHistory()" class="text-xs text-rose-400 hover:text-rose-300 font-bold px-3 py-1.5 rounded-lg hover:bg-rose-500/10">مسح السجل</button>
-        <button onclick="exportHistoryText()" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold px-3 py-1.5 rounded-lg">تصدير السجل</button>
+        <button onclick="exportHistoryText()" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold px-3 py-1.5 rounded-lg">تصدير كملف</button>
         <button onclick="closeModal('history-modal')" class="text-xs bg-slate-800 hover:bg-slate-700 px-4 py-1.5 rounded-lg text-white">إغلاق</button>
       </div>
     </div>
   </div>
 
-  <!-- ==================== 6. كود الجافاسكريبت والذكاء الاصطناعي المباشر ==================== -->
+  <!-- ==================== 6. منطق الجافاسكريبت والربط الكامل ==================== -->
   <script>
     let currentInput = '0';
     let expression = '';
@@ -553,10 +553,10 @@
     let currentLang = 'ar';
     let aiMode = 'step_by_step';
     let history = JSON.parse(localStorage.getItem('math_history') || '[]');
-    let graphScale = 25; // مقياس الرسم البياني
+    let graphScale = 25;
     let deferredPrompt = null;
 
-    // رصد وتفعيل تثبيت PWA
+    // رصد تثبيت PWA
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
@@ -564,7 +564,7 @@
 
     window.addEventListener('appinstalled', () => {
       deferredPrompt = null;
-      alert('تم تثبيت تطبيق حاسبة الرياضيات بنجاح على شاشتك الرئيسية!');
+      alert('تم تثبيت التطبيق بنجاح على شاشتك الرئيسية!');
     });
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -576,7 +576,7 @@
       initGraph();
     });
 
-    // ----------------- معالجة زر تثبيت التطبيق PWA -----------------
+    // معالجة زر التثبيت
     async function handlePWAInstallClick() {
       if (deferredPrompt) {
         deferredPrompt.prompt();
@@ -591,22 +591,22 @@
       if (isIOS) {
         box.innerHTML = `
           <div class="p-3 bg-emerald-950/40 border border-emerald-500/30 rounded-2xl mb-2">
-            <span class="font-bold text-emerald-300 block mb-1">خطوات التثبيت على أجهزة iPhone و iPad:</span>
+            <span class="font-bold text-emerald-300 block mb-1">خطوات التثبيت على iPhone و iPad:</span>
             <ol class="list-decimal list-inside space-y-2 text-xs text-slate-200">
-              <li>اضغط على زر <strong>المشاركة (Share <i data-lucide="share" class="inline w-3.5 h-3.5 text-emerald-400"></i>)</strong> في شريط Safari السفلي.</li>
+              <li>اضغط على زر <strong>المشاركة (Share <i data-lucide="share" class="inline w-3.5 h-3.5 text-emerald-400"></i>)</strong> في أسفل متصفح Safari.</li>
               <li>مرر القائمة لأسفل واختر <strong>"إضافة إلى الشاشة الرئيسية" (Add to Home Screen)</strong>.</li>
               <li>اضغط على <strong>"إضافة" (Add)</strong> في أعلى الزاوية.</li>
             </ol>
           </div>
-          <p class="text-xs text-slate-400">سيعمل التطبيق كبرنامج مستقل وسريع بدون شريط المتصفح!</p>
+          <p class="text-xs text-slate-400">سيعمل التطبيق كبرنامج مستقل وسريع بدون الحاجة لشريط المتصفح!</p>
         `;
       } else {
         box.innerHTML = `
           <div class="p-3 bg-emerald-950/40 border border-emerald-500/30 rounded-2xl mb-2">
-            <span class="font-bold text-emerald-300 block mb-1">التثبيت على هواتف Android و Chrome:</span>
+            <span class="font-bold text-emerald-300 block mb-1">التثبيت على هواتف Android ومتصفح Chrome:</span>
             <ul class="list-disc list-inside space-y-1.5 text-xs text-slate-200">
-              <li>افتح قائمة الخيارات في المتصفح <strong>(⋮)</strong> أعلى أو أسفل الشاشة.</li>
-              <li>اختر <strong>"تثبيت التطبيق" (Install app)</strong> أو <strong>"إضافة إلى الشاشة الرئيسية"</strong>.</li>
+              <li>افتح قائمة الخيارات في المتصفح <strong>(⋮)</strong>.</li>
+              <li>اختر <strong>"تثبيت التطبيق"</strong> أو <strong>"إضافة إلى الشاشة الرئيسية"</strong>.</li>
             </ul>
           </div>
         `;
@@ -615,7 +615,7 @@
       lucide.createIcons();
     }
 
-    // ----------------- زر الإضاءة (Theme Toggle) -----------------
+    // زر الإضاءة
     function toggleTheme() {
       const html = document.documentElement;
       const themeBtn = document.getElementById('theme-btn');
@@ -650,7 +650,7 @@
       lucide.createIcons();
     }
 
-    // ----------------- تبديل اللغة -----------------
+    // تبديل اللغة
     function toggleLanguage() {
       const html = document.documentElement;
       currentLang = currentLang === 'ar' ? 'en' : 'ar';
@@ -664,7 +664,7 @@
       });
     }
 
-    // ----------------- التبديل بين التبويبات -----------------
+    // التبديل بين التبويبات
     function switchTab(tabKey) {
       ['scientific', 'equations', 'graphing', 'geometry', 'stats', 'converter'].forEach(tab => {
         const view = document.getElementById(`view-${tab}`);
@@ -680,7 +680,7 @@
       if (tabKey === 'graphing') renderGraph();
     }
 
-    // ----------------- الحاسبة العلمية -----------------
+    // الحاسبة العلمية
     function updateCalcScreen() {
       document.getElementById('calc-display').innerText = currentInput;
       document.getElementById('calc-expression').innerText = expression;
@@ -781,7 +781,7 @@
       }
     }
 
-    // ----------------- مساعد الذكاء الاصطناعي الرياضي (AI Assistant) -----------------
+    // مساعد الذكاء الاصطناعي
     function openAIModal(initialText = '') {
       if (initialText) document.getElementById('ai-prompt-input').value = initialText;
       openModal('ai-modal');
@@ -835,7 +835,7 @@
 
       let aiResponseText = '';
 
-      // 1. الاتصال المباشر بنقطة نهاية Vercel Serverless Function
+      // 1. الاتصال المباشر والآمن بنقطة نهاية Vercel
       try {
         const res = await fetch('/api/ai-math-assistant', {
           method: 'POST',
@@ -854,7 +854,7 @@
         console.log('Serverless API call completed or local mode:', err);
       }
 
-      // 2. إذا لم تكن نقطة Vercel جاهزة أو أثناء التطوير المحلي، يعمل المحرك الداخلي بدون تشويه
+      // 2. إذا لم يكن الاتصال جاهزاً، يعمل المحرك الداخلي النظيف
       if (!aiResponseText) {
         await new Promise(r => setTimeout(r, 500));
         aiResponseText = generateCleanMathResponse(text);
@@ -880,7 +880,6 @@
       lucide.createIcons();
     }
 
-    // محرك الحل النظيف (بدون أي رموز LaTeX مشوهة مثل $$ أو \)
     function generateCleanMathResponse(query) {
       const q = query.toLowerCase();
 
@@ -889,8 +888,8 @@
 
 1. الصيغة العامة: ax² + bx + c = 0
 2. حساب المميز: Δ = b² - 4ac
-   • إذا كان Δ > 0: يوجد حلان حقيقيان مختلفان.
-   • إذا كان Δ = 0: يوجد حل حقيقي وحيد مكرر (x = -b / 2a).
+   • إذا كان Δ > 0: يوجد جذران حقيقيان مختلفان.
+   • إذا كان Δ = 0: يوجد جذر حقيقي وحيد مكرر (x = -b / 2a).
    • إذا كان Δ < 0: يوجد حلان مركبان (تخيليان).
 
 3. القانون العام للجذور:
@@ -930,7 +929,7 @@
         .replace(/\*(.*?)\*/g, '<em class="text-indigo-300">$1</em>');
     }
 
-    // ----------------- حل المعادلات (Equation Solvers) -----------------
+    // حل المعادلات
     function setEquationType(type) {
       if (type === 'quadratic') {
         document.getElementById('form-quadratic').classList.remove('hidden');
@@ -983,7 +982,7 @@
                  <div class="font-mono text-slate-300 text-sm">x₁ = ${real} + ${imag}i</div>
                  <div class="font-mono text-slate-300 text-sm">x₂ = ${real} - ${imag}i</div>`;
       }
-      html += `<div class="mt-2 text-xs text-slate-400 pt-2 border-t border-slate-800">رأس القطع المكافئ (Vertex): (${vertexX}, ${vertexY})</div>`;
+      html += `<div class="mt-2 text-xs text-slate-400 pt-2 border-t border-slate-800">رأس القطع المكافئ: (${vertexX}, ${vertexY})</div>`;
       box.innerHTML = html;
     }
 
@@ -1004,7 +1003,7 @@
         if (Dx === 0 && Dy === 0) {
           box.innerHTML = `<span class="text-amber-400 font-bold">للنظام عدد لا نهائي من الحلول (مستقيمان منطبقان).</span>`;
         } else {
-          box.innerHTML = `<span class="text-rose-400 font-bold">لا يوجد حل للنظام (مستقيمان متوازيان ومستحيلان).</span>`;
+          box.innerHTML = `<span class="text-rose-400 font-bold">لا يوجد حل للنظام (مستقيمان متوازيان).</span>`;
         }
         return;
       }
@@ -1020,7 +1019,7 @@
       `;
     }
 
-    // ----------------- الرسم البياني التفاعلي (Grapher) -----------------
+    // الرسم البياني التفاعلي
     function initGraph() {
       const canvas = document.getElementById('graphCanvas');
       if (!canvas) return;
@@ -1084,7 +1083,6 @@
       ctx.moveTo(originX, 0); ctx.lineTo(originX, h);
       ctx.stroke();
 
-      // منحنى الدالة
       let parsed = rawExpr
         .replace(/sin/g, 'Math.sin')
         .replace(/cos/g, 'Math.cos')
@@ -1110,7 +1108,7 @@
       ctx.stroke();
     }
 
-    // ----------------- الهندسة والمساحات -----------------
+    // الهندسة
     function updateGeometryFields() {
       const shape = document.getElementById('geo-shape').value;
       const box = document.getElementById('geo-inputs');
@@ -1185,7 +1183,7 @@
       }
     }
 
-    // ----------------- الإحصاء -----------------
+    // الإحصاء
     function calculateStatistics() {
       let raw = document.getElementById('stats-input').value;
       let arr = raw.split(/[, ]+/).map(Number).filter(n => !isNaN(n));
@@ -1212,7 +1210,7 @@
       `;
     }
 
-    // ----------------- تحويل الوحدات الشامل -----------------
+    // محول الوحدات
     const unitDefinitions = {
       length: {
         units: { m: 'متر', km: 'كيلومتر', cm: 'سنتيمتر', mm: 'ميليمتر', mile: 'ميل', yard: 'ياردة', ft: 'قدم', inch: 'بوصة' },
@@ -1280,7 +1278,7 @@
       document.getElementById('conv-result').innerText = `${Number(result.toFixed(4))} ${to}`;
     }
 
-    // ----------------- السجل والحفظ -----------------
+    // السجل والمحفوظات
     function addHistory(expr, result) {
       history.unshift({ expr, result, time: new Date().toLocaleTimeString() });
       if (history.length > 30) history.pop();
@@ -1339,4 +1337,4 @@
     }
   </script>
 </body>
-            </html>
+          </html>
