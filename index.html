@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>حاسبة الرياضيات الذكية | Smart Math Calculator</title>
+  
+  <!-- خط تجوال العربي و Inter اللاتيني -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS عبر CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Tajawal', 'system-ui', 'sans-serif'],
+          },
+          screens: {
+            'xs': '420px',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- أيقونات Lucide عبر CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    * {
+      font-family: 'Tajawal', system-ui, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    input, textarea {
+      user-select: auto;
+    }
+    /* إخفاء شريط التمرير الأفقي مع الحفاظ على التمرير */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+
+  <!-- ==================== الشريط العلوي (Header) ==================== -->
+  <header id="app-header" class="sticky top-0 z-40 w-full backdrop-blur-xl bg-slate-900/90 dark:bg-slate-950/90 border-b border-slate-800/80 transition-colors shadow-sm">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5">
+      <!-- الجزء العلوي: الشعار والإجراءات السريعة -->
+      <div class="flex items-center justify-between gap-2 min-w-0">
+        <!-- الشعار والعنوان -->
+        <div class="flex items-center gap-2 min-w-0 flex-shrink">
+          <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-600 flex items-center justify-center shadow-md shadow-indigo-600/30 text-white font-black text-base sm:text-xl flex-shrink-0">
+            ∑
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5">
+              <h1 id="brand-title" class="text-xs sm:text-base md:text-lg font-black tracking-tight whitespace-nowrap truncate text-white">
+                حاسبة الرياضيات
+              </h1>
+              <span class="text-[9px] sm:text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 flex-shrink-0">
+                PRO
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- أزرار الإجراءات السريعة (بدون تداخل) -->
+        <div class="flex items-center gap-1.5 flex-shrink-0">
+          
+          <!-- 1. زر الإضاءة (نهاري / ليلي) -->
+          <button
+            id="theme-btn"
+            onclick="toggleTheme()"
+            title="تبديل الإضاءة"
+            class="h-8 sm:h-9 px-2.5 rounded-lg border transition-all duration-200 cursor-pointer flex items-center justify-center gap-1 bg-amber-500/20 hover:bg-amber-500/30 border-amber-400/60 text-amber-300 ring-1 ring-amber-400/40 shadow-sm"
+          >
+            <i data-lucide="sun" id="theme-icon" class="w-4 h-4 text-amber-400"></i>
+            <span id="theme-text" class="hidden xl:inline text-xs font-bold text-amber-300">مضيء</span>
+          </button>
+
+          <!-- 2. زر تغيير اللغة -->
+          <button
+            id="lang-btn"
+            onclick="toggleLanguage()"
+            title="Switch Language"
+            class="h-8 sm:h-9 px-2.5 rounded-lg border border-slate-700 bg-slate-800/90 hover:bg-slate-700 text-slate-200 text-xs font-bold transition flex items-center justify-center gap-1"
+          >
+            <i data-lucide="languages" class="w-3.5 h-3.5 text-indigo-400"></i>
+            <span id="lang-text">EN</span>
+          </button>
+
+          <!-- 3. زر السجل الحسابي -->
+          <button
+            id="history-btn"
+            onclick="openModal('history-modal')"
+            title="سجل العمليات"
+            class="h-8 sm:h-9 px-2.5 rounded-lg border border-slate-700 bg-slate-800/90 hover:bg-slate-700 text-slate-200 text-xs font-medium transition flex items-center justify-center gap-1 relative"
+          >
+            <i data-lucide="history" class="w-3.5 h-3.5 text-slate-300"></i>
+            <span id="history-count" class="min-w-[16px] h-[16px] px-1 rounded-full bg-indigo-600 text-white text-[10px] font-bold flex items-center justify-center leading-none">0</span>
+          </button>
+
+          <!-- 4. زر المحفوظات -->
+          <button
+            onclick="openModal('saved-modal')"
+            title="المحفوظات"
+            class="h-8 sm:h-9 px-2.5 rounded-lg border border-violet-400/40 bg-violet-600/30 hover:bg-violet-600/50 text-violet-200 text-xs font-semibold transition flex items-center justify-center gap-1"
+          >
+            <i data-lucide="bookmark" class="w-3.5 h-3.5 text-violet-300"></i>
+            <span class="hidden sm:inline text-xs" id="saved-tab-title">المحفوظات</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- شريط تبويبات الأقسام -->
+      <nav class="flex items-center gap-1 overflow-x-auto no-scrollbar pt-2.5 mt-1 border-t border-slate-800/60 text-xs">
+        <button onclick="switchTab('scientific')" id="tab-scientific" class="tab-btn px-3 py-1.5 rounded-lg font-bold transition flex items-center gap-1 bg-indigo-600 text-white whitespace-nowrap">
+          <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+          <span class="tab-text" data-ar="الحاسبة العلمية" data-en="Scientific">الحاسبة العلمية</span>
+        </button>
+        <button onclick="switchTab('equations')" id="tab-equations" class="tab-btn px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 whitespace-nowrap">
+          <i data-lucide="variable" class="w-3.5 h-3.5"></i>
+          <span class="tab-text" data-ar="حل المعادلات" data-en="Equations">حل المعادلات</span>
+        </button>
+        <button onclick="switchTab('converter')" id="tab-converter" class="tab-btn px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 whitespace-nowrap">
+          <i data-lucide="arrow-left-right" class="w-3.5 h-3.5"></i>
+          <span class="tab-text" data-ar="تحويل الوحدات" data-en="Converter">تحويل الوحدات</span>
+        </button>
+        <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 whitespace-nowrap">
+          <i data-lucide="bar-chart-2" class="w-3.5 h-3.5"></i>
+          <span class="tab-text" data-ar="الإحصاء" data-en="Statistics">الإحصاء</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== المحتوى الأساسي ==================== -->
+  <main class="flex-1 max-w-4xl w-full mx-auto p-3 sm:p-6 flex flex-col items-center justify-start">
+    
+    <!-- قسم 1: الحاسبة العلمية القياسية -->
+    <section id="view-scientific" class="w-full max-w-md bg-slate-900/95 border border-slate-800 p-4 sm:p-6 rounded-3xl shadow-2xl backdrop-blur-xl">
+      
+      <!-- شاشة العرض -->
+      <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-4 mb-4 text-left font-mono">
+        <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
+          <div class="flex gap-2">
+            <button onclick="toggleAngleMode()" id="angle-mode-btn" class="px-2 py-0.5 rounded bg-indigo-900/60 text-indigo-300 font-bold border border-indigo-700/50 text-[11px]">DEG</button>
+            <span id="memory-indicator" class="text-amber-400 hidden font-bold">M</span>
+          </div>
+          <button onclick="saveCurrentResult()" title="حفظ النتيجة" class="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 transition text-[11px]">
+            <i data-lucide="bookmark-plus" class="w-3.5 h-3.5"></i>
+            <span id="save-hint">حفظ</span>
+          </button>
+        </div>
+        <!-- المعادلة السابقة -->
+        <div id="calc-expression" class="text-sm text-slate-400 min-h-[20px] overflow-x-auto whitespace-nowrap text-right" dir="ltr"></div>
+        <!-- الناتج أو المدخل الحالي -->
+        <div id="calc-display" class="text-3xl sm:text-4xl font-bold text-white overflow-x-auto whitespace-nowrap text-right tracking-wider" dir="ltr">0</div>
+      </div>
+
+      <!-- أزرار الذاكرة (Memory) -->
+      <div class="grid grid-cols-5 gap-1.5 mb-3 text-xs">
+        <button onclick="memoryOp('MC')" class="py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-bold">MC</button>
+        <button onclick="memoryOp('MR')" class="py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-bold">MR</button>
+        <button onclick="memoryOp('M+')" class="py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-bold">M+</button>
+        <button onclick="memoryOp('M-')" class="py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-bold">M-</button>
+        <button onclick="memoryOp('MS')" class="py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-bold">MS</button>
+      </div>
+
+      <!-- أزرار الدوال العلمية -->
+      <div class="grid grid-cols-5 gap-1.5 mb-3 text-xs">
+        <button onclick="calcFunc('sin')" class="py-2 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-indigo-300 font-semibold">sin</button>
+        <button onclick="calcFunc('cos')" class="py-2 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-indigo-300 font-semibold">cos</button>
+        <button onclick="calcFunc('tan')" class="py-2 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-indigo-300 font-semibold">tan</button>
+        <button onclick="calcOp('^')" class="py-2 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-indigo-300 font-semibold">xʸ</button>
+        <button onclick="calcFunc('sqrt')" class="py-2 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-indigo-300 font-semibold">√</button>
+
+        <button onclick="calcFunc('ln')" class="py-2 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-indigo-300 font-semibold">ln</button>
+        <button onclick="calcFunc('log')" class="py-2 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-indigo-300 font-semibold">log</button>
+        <button onclick="calcConst('pi')" class="py-2 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-indigo-300 font-semibold">π</button>
+        <button onclick="calcConst('e')" class="py-2 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-indigo-300 font-semibold">e</button>
+        <button onclick="calcFunc('sq')" class="py-2 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-indigo-300 font-semibold">x²</button>
+
+        <button onclick="calcInput('(')" class="py-2 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-slate-300 font-semibold">(</button>
+        <button onclick="calcInput(')')" class="py-2 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-slate-300 font-semibold">)</button>
+        <button onclick="calcFunc('fact')" class="py-2 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-indigo-300 font-semibold">n!</button>
+        <button onclick="calcFunc('recip')" class="py-2 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-indigo-300 font-semibold">1/x</button>
+        <button onclick="calcOp('%')" class="py-2 rounded-xl bg-slate-800/70 hover:bg-slate-700 text-indigo-300 font-semibold">%</button>
+      </div>
+
+      <!-- لوحة الأرقام والعمليات الأساسية -->
+      <div class="grid grid-cols-4 gap-2">
+        <button onclick="calcClearAll()" class="py-3.5 rounded-2xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 font-bold border border-rose-500/30 text-base">AC</button>
+        <button onclick="calcDelete()" class="py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-base">⌫</button>
+        <button onclick="calcToggleSign()" class="py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-base">±</button>
+        <button onclick="calcOp('/')" class="py-3.5 rounded-2xl bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 font-bold border border-indigo-500/40 text-lg">÷</button>
+
+        <button onclick="calcInput('7')" class="py-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-white font-bold text-xl">7</button>
+        <button onclick="calcInput('8')" class="py-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-white font-bold text-xl">8</button>
+        <button onclick="calcInput('9')" class="py-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-white font-bold text-xl">9</button>
+        <button onclick="calcOp('*')" class="py-3.5 rounded-2xl bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 font-bold border border-indigo-500/40 text-lg">×</button>
+
+        <button onclick="calcInput('4')" class="py-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-white font-bold text-xl">4</button>
+        <button onclick="calcInput('5')" class="py-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-white font-bold text-xl">5</button>
+        <button onclick="calcInput('6')" class="py-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-white font-bold text-xl">6</button>
+        <button onclick="calcOp('-')" class="py-3.5 rounded-2xl bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 font-bold border border-indigo-500/40 text-lg">−</button>
+
+        <button onclick="calcInput('1')" class="py-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-white font-bold text-xl">1</button>
+        <button onclick="calcInput('2')" class="py-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-white font-bold text-xl">2</button>
+        <button onclick="calcInput('3')" class="py-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-white font-bold text-xl">3</button>
+        <button onclick="calcOp('+')" class="py-3.5 rounded-2xl bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 font-bold border border-indigo-500/40 text-lg">+</button>
+
+        <button onclick="calcInput('0')" class="col-span-2 py-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-white font-bold text-xl">0</button>
+        <button onclick="calcInput('.')" class="py-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 text-white font-bold text-xl">.</button>
+        <button onclick="calcEquals()" class="py-3.5 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-600 hover:opacity-90 text-white font-black text-2xl shadow-lg shadow-indigo-600/40">=</button>
+      </div>
+    </section>
+
+    <!-- قسم 2: حل المعادلات الرياضية -->
+    <section id="view-equations" class="w-full max-w-lg bg-slate-900/95 border border-slate-800 p-5 rounded-3xl shadow-xl hidden">
+      <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+        <i data-lucide="variable" class="w-5 h-5 text-indigo-400"></i>
+        <span class="trans-eq-title">حل المعادلات من الدرجة الثانية (ax² + bx + c = 0)</span>
+      </h2>
+      <div class="grid grid-cols-3 gap-3 mb-4 text-center">
+        <div>
+          <label class="text-xs text-slate-400 block mb-1">المعامل a</label>
+          <input type="number" id="eq-a" value="1" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-center font-bold" />
+        </div>
+        <div>
+          <label class="text-xs text-slate-400 block mb-1">المعامل b</label>
+          <input type="number" id="eq-b" value="-5" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-center font-bold" />
+        </div>
+        <div>
+          <label class="text-xs text-slate-400 block mb-1">المعامل c</label>
+          <input type="number" id="eq-c" value="6" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-center font-bold" />
+        </div>
+      </div>
+      <button onclick="solveQuadratic()" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition shadow-md">
+        حل المعادلة وحساب الجذور
+      </button>
+      <div id="eq-result" class="mt-4 p-4 rounded-xl bg-slate-950 border border-slate-800 min-h-[60px] text-sm text-slate-300">
+        أدخل المعاملات واضغط "حل المعادلة" لعرض النتائج وخطوات الحل بالتفصيل.
+      </div>
+    </section>
+
+    <!-- قسم 3: تحويل الوحدات -->
+    <section id="view-converter" class="w-full max-w-lg bg-slate-900/95 border border-slate-800 p-5 rounded-3xl shadow-xl hidden">
+      <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+        <i data-lucide="arrow-left-right" class="w-5 h-5 text-indigo-400"></i>
+        <span>تحويل وحدات القياس</span>
+      </h2>
+      <div class="space-y-3">
+        <div>
+          <label class="text-xs text-slate-400 block mb-1">القيمة المراد تحويلها</label>
+          <input type="number" id="conv-val" value="1" oninput="convertUnits()" class="w-full p-3 rounded-xl bg-slate-950 border border-slate-700 text-white font-bold" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs text-slate-400 block mb-1">من وحدة</label>
+            <select id="conv-from" onchange="convertUnits()" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white">
+              <option value="m">متر (m)</option>
+              <option value="km">كيلومتر (km)</option>
+              <option value="cm">سنتيمتر (cm)</option>
+              <option value="inch">بوصة (inch)</option>
+              <option value="kg">كيلوجرام (kg)</option>
+              <option value="lb">باوند (lb)</option>
+              <option value="c">درجة مئوية (°C)</option>
+              <option value="f">فهرنهايت (°F)</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs text-slate-400 block mb-1">إلى وحدة</label>
+            <select id="conv-to" onchange="convertUnits()" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white">
+              <option value="km">كيلومتر (km)</option>
+              <option value="m">متر (m)</option>
+              <option value="cm">سنتيمتر (cm)</option>
+              <option value="inch">بوصة (inch)</option>
+              <option value="lb">باوند (lb)</option>
+              <option value="kg">كيلوجرام (kg)</option>
+              <option value="f">فهرنهايت (°F)</option>
+              <option value="c">درجة مئوية (°C)</option>
+            </select>
+          </div>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 text-center">
+          <span class="text-xs text-slate-400 block mb-1">النتيجة المحسوبة</span>
+          <span id="conv-result" class="text-2xl font-bold text-indigo-400">0.001 km</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- قسم 4: الإحصاء -->
+    <section id="view-stats" class="w-full max-w-lg bg-slate-900/95 border border-slate-800 p-5 rounded-3xl shadow-xl hidden">
+      <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+        <i data-lucide="bar-chart-2" class="w-5 h-5 text-indigo-400"></i>
+        <span>الحسابات الإحصائية</span>
+      </h2>
+      <label class="text-xs text-slate-400 block mb-1">أدخل الأرقام مفصولة بفواصل (مثال: 12, 5, 8, 20, 15)</label>
+      <input type="text" id="stats-input" value="12, 5, 8, 20, 15, 8, 9" class="w-full p-3 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono mb-3" />
+      <button onclick="calculateStatistics()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition mb-4">
+        تحليل البيانات الإحصائية
+      </button>
+      <div id="stats-results" class="grid grid-cols-2 gap-2 text-xs">
+        <!-- ستملأ برمجياً -->
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== نوافذ منبثقة (Modals) ==================== -->
+  
+  <!-- نافذة سجل العمليات -->
+  <div id="history-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-5 shadow-2xl flex flex-col max-h-[85vh]">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="font-bold text-base flex items-center gap-2 text-white">
+          <i data-lucide="history" class="w-4 h-4 text-indigo-400"></i>
+          <span>سجل العمليات الحسابية</span>
+        </h3>
+        <button onclick="closeModal('history-modal')" class="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="history-list" class="flex-1 overflow-y-auto py-3 space-y-2 no-scrollbar min-h-[150px]">
+        <!-- عناصر السجل -->
+      </div>
+      <div class="pt-3 border-t border-slate-800 flex justify-between">
+        <button onclick="clearHistory()" class="text-xs text-rose-400 hover:text-rose-300 font-bold px-3 py-1.5 rounded-lg hover:bg-rose-500/10 transition">مسح السجل</button>
+        <button onclick="closeModal('history-modal')" class="text-xs bg-slate-800 hover:bg-slate-700 px-4 py-1.5 rounded-lg text-white font-semibold">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة المحفوظات -->
+  <div id="saved-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-5 shadow-2xl flex flex-col max-h-[85vh]">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="font-bold text-base flex items-center gap-2 text-white">
+          <i data-lucide="bookmark" class="w-4 h-4 text-violet-400"></i>
+          <span>النتائج المحفوظة</span>
+        </h3>
+        <button onclick="closeModal('saved-modal')" class="p-1.5 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="saved-list" class="flex-1 overflow-y-auto py-3 space-y-2 no-scrollbar min-h-[150px]">
+        <!-- عناصر المحفوظات -->
+      </div>
+      <div class="pt-3 border-t border-slate-800 flex justify-between">
+        <button onclick="clearSaved()" class="text-xs text-rose-400 hover:text-rose-300 font-bold px-3 py-1.5 rounded-lg hover:bg-rose-500/10 transition">مسح الكل</button>
+        <button onclick="closeModal('saved-modal')" class="text-xs bg-slate-800 hover:bg-slate-700 px-4 py-1.5 rounded-lg text-white font-semibold">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== البرمجة التفاعلية (JavaScript) ==================== -->
+  <script>
+    // تهيئة المتغيرات الأساسية
+    let currentInput = '0';
+    let expression = '';
+    let memoryValue = 0;
+    let angleMode = 'DEG'; // DEG أو RAD
+    let currentTheme = 'dark';
+    let currentLang = 'ar';
+    let history = JSON.parse(localStorage.getItem('math_history') || '[]');
+    let savedResults = JSON.parse(localStorage.getItem('math_saved') || '[]');
+
+    // تحديث الأيقونات عند بدء التشغيل
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      updateHistoryCount();
+      calculateStatistics();
+      convertUnits();
+    });
+
+    // 1. إدارة الإضاءة والسمات (Theme)
+    function toggleTheme() {
+      const html = document.documentElement;
+      const themeBtn = document.getElementById('theme-btn');
+      const themeText = document.getElementById('theme-text');
+      const brandTitle = document.getElementById('brand-title');
+      const header = document.getElementById('app-header');
+
+      if (currentTheme === 'dark') {
+        currentTheme = 'light';
+        html.classList.remove('dark');
+        document.body.classList.remove('bg-slate-950', 'text-slate-100');
+        document.body.classList.add('bg-slate-100', 'text-slate-900');
+        header.classList.remove('bg-slate-900/90', 'border-slate-800/80');
+        header.classList.add('bg-white/95', 'border-slate-200');
+        brandTitle.classList.remove('text-white');
+        brandTitle.classList.add('text-slate-900');
+        
+        themeBtn.className = "h-8 sm:h-9 px-2.5 rounded-lg border transition-all duration-200 cursor-pointer flex items-center justify-center gap-1 bg-amber-100 hover:bg-amber-200 border-amber-300 text-amber-900 shadow-sm";
+        themeBtn.innerHTML = '<i data-lucide="moon" class="w-4 h-4 text-indigo-700"></i><span id="theme-text" class="hidden xl:inline text-xs font-bold text-slate-800">داكن</span>';
+      } else {
+        currentTheme = 'dark';
+        html.classList.add('dark');
+        document.body.classList.remove('bg-slate-100', 'text-slate-900');
+        document.body.classList.add('bg-slate-950', 'text-slate-100');
+        header.classList.remove('bg-white/95', 'border-slate-200');
+        header.classList.add('bg-slate-900/90', 'border-slate-800/80');
+        brandTitle.classList.remove('text-slate-900');
+        brandTitle.classList.add('text-white');
+
+        themeBtn.className = "h-8 sm:h-9 px-2.5 rounded-lg border transition-all duration-200 cursor-pointer flex items-center justify-center gap-1 bg-amber-500/20 hover:bg-amber-500/30 border-amber-400/60 text-amber-300 ring-1 ring-amber-400/40 shadow-sm";
+        themeBtn.innerHTML = '<i data-lucide="sun" class="w-4 h-4 text-amber-400"></i><span id="theme-text" class="hidden xl:inline text-xs font-bold text-amber-300">مضيء</span>';
+      }
+      lucide.createIcons();
+    }
+
+    // 2. إدارة اللغة (Language)
+    function toggleLanguage() {
+      const html = document.documentElement;
+      const langText = document.getElementById('lang-text');
+      const brandTitle = document.getElementById('brand-title');
+
+      if (currentLang === 'ar') {
+        currentLang = 'en';
+        html.setAttribute('dir', 'ltr');
+        html.setAttribute('lang', 'en');
+        langText.innerText = 'عربي';
+        brandTitle.innerText = 'Smart Calculator';
+      } else {
+        currentLang = 'ar';
+        html.setAttribute('dir', 'rtl');
+        html.setAttribute('lang', 'ar');
+        langText.innerText = 'EN';
+        brandTitle.innerText = 'حاسبة الرياضيات';
+      }
+
+      // تحديث نصوص التبويبات
+      document.querySelectorAll('.tab-text').forEach(el => {
+        el.innerText = el.getAttribute(`data-${currentLang}`) || el.innerText;
+      });
+    }
+
+    // 3. التبديل بين التبويبات
+    function switchTab(tabKey) {
+      ['scientific', 'equations', 'converter', 'stats'].forEach(tab => {
+        const view = document.getElementById(`view-${tab}`);
+        const btn = document.getElementById(`tab-${tab}`);
+        if (tab === tabKey) {
+          view.classList.remove('hidden');
+          btn.className = "tab-btn px-3 py-1.5 rounded-lg font-bold transition flex items-center gap-1 bg-indigo-600 text-white whitespace-nowrap shadow-md";
+        } else {
+          view.classList.add('hidden');
+          btn.className = "tab-btn px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 whitespace-nowrap";
+        }
+      });
+    }
+
+    // 4. منطق الحاسبة العلمية
+    function updateCalcScreen() {
+      document.getElementById('calc-display').innerText = currentInput;
+      document.getElementById('calc-expression').innerText = expression;
+    }
+
+    function calcInput(char) {
+      if (currentInput === '0' && char !== '.') {
+        currentInput = char;
+      } else {
+        if (char === '.' && currentInput.includes('.')) return;
+        currentInput += char;
+      }
+      updateCalcScreen();
+    }
+
+    function calcOp(op) {
+      expression = `${currentInput} ${op} `;
+      currentInput = '0';
+      updateCalcScreen();
+    }
+
+    function calcDelete() {
+      if (currentInput.length > 1) {
+        currentInput = currentInput.slice(0, -1);
+      } else {
+        currentInput = '0';
+      }
+      updateCalcScreen();
+    }
+
+    function calcClearAll() {
+      currentInput = '0';
+      expression = '';
+      updateCalcScreen();
+    }
+
+    function calcToggleSign() {
+      if (currentInput !== '0') {
+        currentInput = (parseFloat(currentInput) * -1).toString();
+        updateCalcScreen();
+      }
+    }
+
+    function toggleAngleMode() {
+      angleMode = angleMode === 'DEG' ? 'RAD' : 'DEG';
+      document.getElementById('angle-mode-btn').innerText = angleMode;
+    }
+
+    function calcConst(c) {
+      if (c === 'pi') currentInput = Math.PI.toFixed(8).toString();
+      if (c === 'e') currentInput = Math.E.toFixed(8).toString();
+      updateCalcScreen();
+    }
+
+    function calcFunc(func) {
+      let val = parseFloat(currentInput);
+      let res = 0;
+      let angle = angleMode === 'DEG' ? (val * Math.PI / 180) : val;
+
+      switch(func) {
+        case 'sin': res = Math.sin(angle); break;
+        case 'cos': res = Math.cos(angle); break;
+        case 'tan': res = Math.tan(angle); break;
+        case 'sqrt': res = Math.sqrt(val); break;
+        case 'sq': res = Math.pow(val, 2); break;
+        case 'ln': res = Math.log(val); break;
+        case 'log': res = Math.log10(val); break;
+        case 'recip': res = 1 / val; break;
+        case 'fact': 
+          res = factorial(Math.round(val));
+          break;
+      }
+      addHistory(`${func}(${val})`, res);
+      currentInput = Number(res.toFixed(8)).toString();
+      expression = `${func}(${val}) =`;
+      updateCalcScreen();
+    }
+
+    function factorial(n) {
+      if (n < 0) return NaN;
+      if (n === 0 || n === 1) return 1;
+      let f = 1;
+      for (let i = 2; i <= Math.min(n, 100); i++) f *= i;
+      return f;
+    }
+
+    function calcEquals() {
+      if (!expression) return;
+      try {
+        let fullExpr = expression + currentInput;
+        let safeExpr = fullExpr
+          .replace(/×/g, '*')
+          .replace(/÷/g, '/')
+          .replace(/\^/g, '**');
+
+        let result = Function(`'use strict'; return (${safeExpr})`)();
+        result = Number(result.toFixed(8));
+        addHistory(fullExpr, result);
+        expression = fullExpr + ' =';
+        currentInput = result.toString();
+        updateCalcScreen();
+      } catch (err) {
+        currentInput = 'خطأ';
+        updateCalcScreen();
+      }
+    }
+
+    // 5. الذاكرة الحسابية (Memory)
+    function memoryOp(op) {
+      let val = parseFloat(currentInput);
+      let ind = document.getElementById('memory-indicator');
+      switch(op) {
+        case 'MC': memoryValue = 0; ind.classList.add('hidden'); break;
+        case 'MR': currentInput = memoryValue.toString(); updateCalcScreen(); break;
+        case 'MS': memoryValue = val; ind.classList.remove('hidden'); break;
+        case 'M+': memoryValue += val; ind.classList.remove('hidden'); break;
+        case 'M-': memoryValue -= val; ind.classList.remove('hidden'); break;
+      }
+    }
+
+    // 6. السجل والمحفوظات (History & Saved)
+    function addHistory(expr, result) {
+      history.unshift({ expr, result, date: new Date().toLocaleTimeString('ar-EG') });
+      if (history.length > 50) history.pop();
+      localStorage.setItem('math_history', JSON.stringify(history));
+      updateHistoryCount();
+    }
+
+    function updateHistoryCount() {
+      document.getElementById('history-count').innerText = history.length;
+    }
+
+    function clearHistory() {
+      history = [];
+      localStorage.removeItem('math_history');
+      renderHistoryList();
+      updateHistoryCount();
+    }
+
+    function saveCurrentResult() {
+      let val = currentInput;
+      if (val === '0' || val === 'خطأ') return;
+      savedResults.unshift({ val, desc: expression || 'نتيجة حسابية', date: new Date().toLocaleDateString('ar-EG') });
+      localStorage.setItem('math_saved', JSON.stringify(savedResults));
+      alert('تم حفظ النتيجة بنجاح في قسم المحفوظات!');
+    }
+
+    function clearSaved() {
+      savedResults = [];
+      localStorage.removeItem('math_saved');
+      renderSavedList();
+    }
+
+    // 7. إدارة النوافذ المنبثقة
+    function openModal(id) {
+      if (id === 'history-modal') renderHistoryList();
+      if (id === 'saved-modal') renderSavedList();
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function renderHistoryList() {
+      const container = document.getElementById('history-list');
+      if (history.length === 0) {
+        container.innerHTML = '<div class="text-center text-slate-500 py-6 text-xs">لا توجد عمليات سابقة حتى الآن.</div>';
+        return;
+      }
+      container.innerHTML = history.map(item => `
+        <div class="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-left" dir="ltr">
+          <div class="text-xs text-slate-400">${item.expr}</div>
+          <div class="text-base font-bold text-indigo-400">= ${item.result}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderSavedList() {
+      const container = document.getElementById('saved-list');
+      if (savedResults.length === 0) {
+        container.innerHTML = '<div class="text-center text-slate-500 py-6 text-xs">لا توجد نتائج محفوظة بعد.</div>';
+        return;
+      }
+      container.innerHTML = savedResults.map(item => `
+        <div class="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
+          <div>
+            <div class="text-sm font-bold text-white">${item.val}</div>
+            <div class="text-[11px] text-slate-400">${item.desc}</div>
+          </div>
+          <span class="text-[10px] text-slate-500">${item.date}</span>
+        </div>
+      `).join('');
+    }
+
+    // 8. حل المعادلات من الدرجة الثانية
+    function solveQuadratic() {
+      let a = parseFloat(document.getElementById('eq-a').value);
+      let b = parseFloat(document.getElementById('eq-b').value);
+      let c = parseFloat(document.getElementById('eq-c').value);
+      let box = document.getElementById('eq-result');
+
+      if (isNaN(a) || isNaN(b) || isNaN(c)) {
+        box.innerHTML = '<span class="text-rose-400">يرجى إدخال قيم عددية صحيحة لجميع المعاملات.</span>';
+        return;
+      }
+      if (a === 0) {
+        box.innerHTML = '<span class="text-amber-400">إذا كانت a = 0 فإن المعادلة خطية وليست تربيعية: x = ' + (-c / b).toFixed(4) + '</span>';
+        return;
+      }
+
+      let delta = (b * b) - (4 * a * c);
+      let html = `<div class="font-bold mb-1">المميز (Δ = b² - 4ac) = ${delta.toFixed(4)}</div>`;
+
+      if (delta > 0) {
+        let x1 = ((-b + Math.sqrt(delta)) / (2 * a)).toFixed(4);
+        let x2 = ((-b - Math.sqrt(delta)) / (2 * a)).toFixed(4);
+        html += `<div class="text-emerald-400 font-bold">يوجد حلان حقيقيان مختلفان:</div>
+                 <div class="mt-1">الجذر الأول (x₁): <span class="font-mono text-white">${x1}</span></div>
+                 <div>الجذر الثاني (x₂): <span class="font-mono text-white">${x2}</span></div>`;
+      } else if (delta === 0) {
+        let x = (-b / (2 * a)).toFixed(4);
+        html += `<div class="text-indigo-400 font-bold">يوجد جذر حقيقي مكرر وحيد:</div>
+                 <div class="mt-1">x = <span class="font-mono text-white">${x}</span></div>`;
+      } else {
+        let real = (-b / (2 * a)).toFixed(4);
+        let imag = (Math.sqrt(-delta) / (2 * a)).toFixed(4);
+        html += `<div class="text-amber-400 font-bold">المميز سالب: يوجد حلان مركبان (تخيليان):</div>
+                 <div class="mt-1">x₁ = ${real} + ${imag}i</div>
+                 <div>x₂ = ${real} - ${imag}i</div>`;
+      }
+      box.innerHTML = html;
+    }
+
+    // 9. تحويل الوحدات
+    function convertUnits() {
+      let val = parseFloat(document.getElementById('conv-val').value) || 0;
+      let from = document.getElementById('conv-from').value;
+      let to = document.getElementById('conv-to').value;
+      let result = val;
+
+      // تحويلات الطول إلى متر
+      const toMeters = { m: 1, km: 1000, cm: 0.01, inch: 0.0254 };
+      if (toMeters[from] && toMeters[to]) {
+        let meters = val * toMeters[from];
+        result = meters / toMeters[to];
+      }
+
+      // تحويلات الوزن إلى كجم
+      const toKg = { kg: 1, lb: 0.453592 };
+      if (toKg[from] && toKg[to]) {
+        let kg = val * toKg[from];
+        result = kg / toKg[to];
+      }
+
+      // تحويلات الحرارة
+      if (from === 'c' && to === 'f') result = (val * 9/5) + 32;
+      if (from === 'f' && to === 'c') result = (val - 32) * 5/9;
+
+      document.getElementById('conv-result').innerText = `${Number(result.toFixed(4))} ${to}`;
+    }
+
+    // 10. الإحصاء
+    function calculateStatistics() {
+      let raw = document.getElementById('stats-input').value;
+      let arr = raw.split(/[, ]+/).map(Number).filter(n => !isNaN(n));
+      let container = document.getElementById('stats-results');
+
+      if (arr.length === 0) {
+        container.innerHTML = '<div class="col-span-2 text-rose-400">يرجى إدخال أرقام صحيحة.</div>';
+        return;
+      }
+
+      arr.sort((a, b) => a - b);
+      let count = arr.length;
+      let sum = arr.reduce((a, b) => a + b, 0);
+      let mean = sum / count;
+      let min = arr[0];
+      let max = arr[arr.length - 1];
+      let median = count % 2 !== 0 ? arr[Math.floor(count / 2)] : (arr[count/2 - 1] + arr[count/2]) / 2;
+      
+      let variance = arr.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / count;
+      let stdDev = Math.sqrt(variance);
+
+      container.innerHTML = `
+        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+          <span class="text-slate-400 block">العدد الإجمالي (N)</span>
+          <span class="text-base font-bold text-white font-mono">${count}</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+          <span class="text-slate-400 block">المجموع (Sum)</span>
+          <span class="text-base font-bold text-white font-mono">${sum.toFixed(2)}</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+          <span class="text-slate-400 block">المتوسط الحسابي (Mean)</span>
+          <span class="text-base font-bold text-indigo-400 font-mono">${mean.toFixed(2)}</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+          <span class="text-slate-400 block">الوسيط (Median)</span>
+          <span class="text-base font-bold text-indigo-400 font-mono">${median.toFixed(2)}</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+          <span class="text-slate-400 block">المدى (Range)</span>
+          <span class="text-base font-bold text-white font-mono">${(max - min).toFixed(2)}</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800">
+          <span class="text-slate-400 block">الانحراف المعياري (Std Dev)</span>
+          <span class="text-base font-bold text-indigo-400 font-mono">${stdDev.toFixed(2)}</span>
+        </div>
+      `;
+    }
+  </script>
+</body>
+                </html>
