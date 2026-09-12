@@ -90,7 +90,7 @@
             id="theme-btn"
             onclick="toggleTheme()"
             title="تبديل الإضاءة"
-            class="h-8 sm:h-9 px-2 rounded-lg sm:rounded-xl border transition-all cursor-pointer flex items-center justify-center gap-1 bg-amber-500/20 hover:bg-amber-500/30 border-amber-400/60 text-amber-300 ring-1 ring-amber-400/40 shadow-sm flex-shrink-0"
+            class="h-8 sm:h-9 px-2 rounded-lg sm:rounded-xl border transition-all cursor-pointer flex items-center justify-center gap-1 bg-amber-500/25 hover:bg-amber-500/35 border-amber-400/60 text-amber-300 ring-1 ring-amber-400/40 shadow-sm flex-shrink-0"
           >
             <i data-lucide="sun" id="theme-icon" class="w-4 h-4 text-amber-400"></i>
             <span id="theme-text" class="hidden lg:inline text-xs font-bold text-amber-300">مضيء</span>
@@ -513,10 +513,10 @@
 
   <!-- ==================== 5. البرمجة والمنطق والمحرك التفاعلي ==================== -->
   <script>
-    // جلب المفتاح تلقائياً من Vercel Environment Variables إذا تم تعيينه باسم NEXT_PUBLIC_GEMINI_API_KEY أو استخدام مفتاح بديل
+    // تضمين المفتاح المباشر المرفق وتفعيله مع دعم Vercel Environment Variables
     const GEMINI_API_KEY = typeof process !== 'undefined' && process.env && process.env.GEMINI_API_KEY 
       ? process.env.GEMINI_API_KEY 
-      : "AIzaSyD-Placeholder-Key-Replace-With-Valid-Key";
+      : "AQ.Ab8RN6L9fqd1N_S2sWDEffLjy7lFdRBZ660IFjD_ZMNIYbyjqA";
 
     let currentInput = '0';
     let expression = '';
@@ -568,7 +568,7 @@
         header.classList.add('bg-slate-900/95', 'border-slate-800/80');
         brandTitle.classList.remove('text-slate-900');
         brandTitle.classList.add('text-white');
-        themeBtn.className = "h-8 sm:h-9 px-2 rounded-lg sm:rounded-xl border transition-all cursor-pointer flex items-center justify-center gap-1 bg-amber-500/20 hover:bg-amber-500/30 border-amber-400/60 text-amber-300 ring-1 ring-amber-400/40 shadow-sm flex-shrink-0";
+        themeBtn.className = "h-8 sm:h-9 px-2 rounded-lg sm:rounded-xl border transition-all cursor-pointer flex items-center justify-center gap-1 bg-amber-500/25 hover:bg-amber-500/35 border-amber-400/60 text-amber-300 ring-1 ring-amber-400/40 shadow-sm flex-shrink-0";
         themeBtn.innerHTML = `<i data-lucide="sun" class="w-4 h-4 text-amber-400"></i><span class="hidden lg:inline text-xs font-bold text-amber-300">${translations[currentLang].lightMode}</span>`;
       }
       lucide.createIcons();
@@ -766,7 +766,7 @@
         const data = await response.json();
         loadingMsg.remove();
 
-        let aiReplyText = "عذراً، تأكد من إعداد مفتاح Google Gemini API الصحيح في متغيرات Vercel (Environment Variables) باسم GEMINI_API_KEY.";
+        let aiReplyText = "عذراً، تحقق من تفعيل الاتصال أو صحة مفتاح الجيميناي.";
         if (data && data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
           aiReplyText = data.candidates[0].content.parts[0].text;
         } else if (data && data.error) {
