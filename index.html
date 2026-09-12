@@ -82,18 +82,6 @@
       observer.observe(document.documentElement, { childList: true, subtree: true });
     })();
   </script>
-  
-  <!-- كود إعلانات Adsterra الجديد (Banner 320x50) -->
-  <script type="text/javascript">
-    atOptions = {
-      'key' : '919fb78354abf4500f31eaec94147963',
-      'format' : 'iframe',
-      'height' : 50,
-      'width' : 320,
-      'params' : {}
-    };
-  </script>
-  <script type="text/javascript" src="https://www.highrevenueformat.com/919fb78354abf4500f31eaec94147963/invoke.js"></script>
 
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
@@ -101,6 +89,21 @@
   <!-- ==================== 1. الشريط العلوي المتجاوب ==================== -->
   <header id="app-header" class="sticky top-0 z-40 w-full backdrop-blur-xl bg-slate-900/95 border-b border-slate-800/80 transition-colors shadow-sm">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 py-2">
+      
+      <!-- مكان عرض الإعلان في الشريط العلوي (Banner 320x50) -->
+      <div class="flex justify-center items-center mb-2 overflow-hidden">
+        <script type="text/javascript">
+          atOptions = {
+            'key' : '919fb78354abf4500f31eaec94147963',
+            'format' : 'iframe',
+            'height' : 50,
+            'width' : 320,
+            'params' : {}
+          };
+        </script>
+        <script type="text/javascript" src="https://www.highrevenueformat.com/919fb78354abf4500f31eaec94147963/invoke.js"></script>
+      </div>
+
       <div class="flex items-center justify-between gap-1 min-w-0">
         
         <!-- الشعار والعنوان -->
