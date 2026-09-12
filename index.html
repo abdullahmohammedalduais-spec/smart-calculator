@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#4f46e5" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="حاسبة الرياضيات" />
@@ -13,10 +14,10 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50%' y='68%' font-size='55' font-weight='900' fill='white' text-anchor='middle' font-family='sans-serif'>∑</text></svg>" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50%' y='68%' font-size='55' font-weight='900' fill='white' text-anchor='middle' font-family='sans-serif'>∑</text></svg>" />
 
-  <!-- إعدادات التثبيت الفوري كـ تطبيق هاتف PWA -->
-  <link rel="manifest" href='data:application/manifest+json,{"name":"حاسبة الرياضيات الذكية","short_name":"حاسبة الرياضيات","start_url":".","display":"standalone","background_color":"%23020617","theme_color":"%234f46e5","description":"تطبيق شامل للحساب العلمي والهندسة والإحصاء مع الذكاء الاصطناعي","icons":[{"src":"data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" rx=\"22\" fill=\"%234f46e5\"/><text x=\"50%\" y=\"68%\" font-size=\"55\" font-weight=\"900\" fill=\"white\" text-anchor=\"middle\" font-family=\"sans-serif\">∑</text></svg>","sizes":"512x512","type":"image/svg+xml"}]}' />
+  <!-- ملف تعريف تثبيت التطبيق PWA Manifest -->
+  <link rel="manifest" href='data:application/manifest+json,{"id":"/","name":"حاسبة الرياضيات الذكية","short_name":"حاسبة الرياضيات","start_url":".","display":"standalone","background_color":"%23020617","theme_color":"%234f46e5","description":"تطبيق شامل للحساب العلمي والهندسة والإحصاء مع الذكاء الاصطناعي","icons":[{"src":"data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" rx=\"22\" fill=\"%234f46e5\"/><text x=\"50%\" y=\"68%\" font-size=\"55\" font-weight=\"900\" fill=\"white\" text-anchor=\"middle\" font-family=\"sans-serif\">∑</text></svg>","sizes":"512x512","type":"image/svg+xml"}]}' />
 
-  <!-- الخطوط الرسمية -->
+  <!-- الخطوط العربية والرياضية -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
@@ -47,22 +48,13 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
+
+  <!-- Adsterra Ad Script (مجهز خصيصاً للتطبيق وHTTPS) -->
+  <script type="text/javascript" src="https://pl31292627.profitableratecpmnetwork.com/5a/39/bd/5a39bdbd120317432fbf9779d4481ae4.js"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
 
-  <!-- ==================== شريط تثبيت التطبيق السريع ==================== -->
-  <div id="pwa-top-banner" class="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 text-white px-3 py-1.5 text-xs font-bold flex items-center justify-between shadow-md">
-    <div class="flex items-center gap-2 truncate">
-      <i data-lucide="smartphone" class="w-4 h-4 flex-shrink-0 animate-bounce"></i>
-      <span class="truncate">ثبّت التطبيق على شاشتك الرئيسية للوصول السريع والعمل في أي وقت!</span>
-    </div>
-    <div class="flex items-center gap-1.5 flex-shrink-0">
-      <button onclick="handlePWAInstallClick()" class="bg-white text-emerald-900 hover:bg-emerald-50 px-2.5 py-1 rounded-lg text-xs font-black shadow transition active:scale-95">تثبيت الآن</button>
-      <button onclick="document.getElementById('pwa-top-banner').remove()" class="p-1 text-white/80 hover:text-white"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>
-    </div>
-  </div>
-
-  <!-- ==================== 1. الشريط العلوي ==================== -->
+  <!-- ==================== 1. الشريط العلوي المتجاوب ==================== -->
   <header id="app-header" class="sticky top-0 z-40 w-full backdrop-blur-xl bg-slate-900/95 border-b border-slate-800/80 transition-colors shadow-sm">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 py-2">
       <div class="flex items-center justify-between gap-1 min-w-0">
@@ -79,21 +71,21 @@
           </div>
         </div>
 
-        <!-- أزرار الإجراءات في الشريط العلوي (واضحة دون أي تداخل) -->
+        <!-- أزرار الإجراءات الرئيسية -->
         <div class="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
           
-          <!-- 1. زر تنزيل / تثبيت التطبيق البارز دائماً -->
+          <!-- زر تثبيت التطبيق (سيختفي تلقائياً داخل الـ APK المرفوع على المتجر لتفادي الرفض) -->
           <button
             id="pwa-install-btn"
-            onclick="handlePWAInstallClick()"
+            onclick="triggerAppInstall()"
             title="تثبيت التطبيق على الشاشة الرئيسية"
-            class="h-8 sm:h-9 px-2 sm:px-3 rounded-lg sm:rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black shadow-md shadow-emerald-700/30 transition-all flex items-center justify-center gap-1 cursor-pointer border border-emerald-400/40 active:scale-95 flex-shrink-0"
+            class="h-8 sm:h-9 px-2.5 sm:px-3.5 rounded-lg sm:rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black shadow-md shadow-emerald-700/30 transition-all flex items-center justify-center gap-1 cursor-pointer border border-emerald-400/40 active:scale-95 flex-shrink-0"
           >
             <i data-lucide="download" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
-            <span class="text-[11px] sm:text-xs">تنزيل التطبيق</span>
+            <span id="install-btn-text" class="text-[11px] sm:text-xs">تثبيت التطبيق</span>
           </button>
 
-          <!-- 2. زر الإضاءة (نهاري / ليلي) -->
+          <!-- زر الإضاءة (نهاري / ليلي) -->
           <button
             id="theme-btn"
             onclick="toggleTheme()"
@@ -104,7 +96,7 @@
             <span id="theme-text" class="hidden lg:inline text-xs font-bold text-amber-300">مضيء</span>
           </button>
 
-          <!-- 3. زر اللغة -->
+          <!-- زر اللغة -->
           <button
             id="lang-btn"
             onclick="toggleLanguage()"
@@ -114,7 +106,7 @@
             <span id="lang-text">EN</span>
           </button>
 
-          <!-- 4. زر السجل -->
+          <!-- زر السجل -->
           <button
             onclick="openModal('history-modal')"
             title="السجل"
@@ -124,14 +116,14 @@
             <span id="history-count" class="w-4 h-4 rounded-full bg-indigo-600 text-white text-[9px] font-bold flex items-center justify-center leading-none">0</span>
           </button>
 
-          <!-- 5. زر الذكاء الاصطناعي (المساعد الذكي) -->
+          <!-- زر الذكاء الاصطناعي -->
           <button
             onclick="openAIModal()"
             title="المساعد الذكي"
             class="relative flex items-center justify-center gap-1 h-8 sm:h-9 px-2.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:opacity-90 text-white text-xs font-bold transition active:scale-95 cursor-pointer shadow-md shadow-violet-900/30 flex-shrink-0"
           >
             <i data-lucide="sparkles" class="w-3.5 h-3.5 text-white animate-pulse"></i>
-            <span class="text-xs">AI</span>
+            <span class="text-xs font-bold">AI</span>
           </button>
         </div>
       </div>
@@ -140,27 +132,27 @@
       <nav class="flex items-center gap-1 overflow-x-auto no-scrollbar pt-2 mt-1 border-t border-slate-800/60 text-xs">
         <button onclick="switchTab('scientific')" id="tab-scientific" class="tab-btn px-3 py-1.5 rounded-lg font-bold transition flex items-center gap-1 bg-indigo-600 text-white whitespace-nowrap shadow-sm">
           <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
-          <span class="tab-text" data-ar="الحاسبة العلمية" data-en="Scientific">الحاسبة العلمية</span>
+          <span class="tab-text" data-key="tabScientific">الحاسبة العلمية</span>
         </button>
         <button onclick="switchTab('equations')" id="tab-equations" class="tab-btn px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 whitespace-nowrap">
           <i data-lucide="variable" class="w-3.5 h-3.5"></i>
-          <span class="tab-text" data-ar="حل المعادلات" data-en="Equations">حل المعادلات</span>
+          <span class="tab-text" data-key="tabEquations">حل المعادلات</span>
         </button>
         <button onclick="switchTab('graphing')" id="tab-graphing" class="tab-btn px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 whitespace-nowrap">
           <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
-          <span class="tab-text" data-ar="الرسم البياني" data-en="Grapher">الرسم البياني</span>
+          <span class="tab-text" data-key="tabGraphing">الرسم البياني</span>
         </button>
         <button onclick="switchTab('geometry')" id="tab-geometry" class="tab-btn px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 whitespace-nowrap">
           <i data-lucide="shapes" class="w-3.5 h-3.5"></i>
-          <span class="tab-text" data-ar="الهندسة والمساحات" data-en="Geometry">الهندسة والمساحات</span>
+          <span class="tab-text" data-key="tabGeometry">الهندسة والمساحات</span>
         </button>
         <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 whitespace-nowrap">
           <i data-lucide="bar-chart-2" class="w-3.5 h-3.5"></i>
-          <span class="tab-text" data-ar="الإحصاء" data-en="Statistics">الإحصاء</span>
+          <span class="tab-text" data-key="tabStats">الإحصاء</span>
         </button>
         <button onclick="switchTab('converter')" id="tab-converter" class="tab-btn px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 whitespace-nowrap">
           <i data-lucide="arrow-left-right" class="w-3.5 h-3.5"></i>
-          <span class="tab-text" data-ar="تحويل الوحدات" data-en="Converter">تحويل الوحدات</span>
+          <span class="tab-text" data-key="tabConverter">تحويل الوحدات</span>
         </button>
       </nav>
     </div>
@@ -181,11 +173,11 @@
           <div class="flex items-center gap-2">
             <button onclick="askAIAboutCurrent()" title="شرح الحل بالذكاء الاصطناعي" class="flex items-center gap-1 text-violet-400 hover:text-violet-300 transition text-[11px] font-bold">
               <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-              <span>شرح بـ AI</span>
+              <span data-key="aiExplain">شرح بـ AI</span>
             </button>
             <button onclick="saveCurrentResult()" title="حفظ النتيجة" class="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 transition text-[11px]">
               <i data-lucide="bookmark" class="w-3.5 h-3.5"></i>
-              <span>حفظ</span>
+              <span data-key="save">حفظ</span>
             </button>
           </div>
         </div>
@@ -256,61 +248,60 @@
       <div class="flex items-center justify-between mb-3">
         <h2 class="text-base font-bold text-white flex items-center gap-2">
           <i data-lucide="variable" class="w-5 h-5 text-indigo-400"></i>
-          <span>حل المعادلات الرياضية الدقيق</span>
+          <span data-key="eqTitle">حل المعادلات الرياضية الدقيق</span>
         </h2>
         <button onclick="askAIAboutEquation()" class="text-xs flex items-center gap-1 text-violet-400 hover:text-violet-300 font-bold">
           <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-          <span>شرح عبر AI</span>
+          <span data-key="aiExplain">شرح عبر AI</span>
         </button>
       </div>
 
-      <!-- خيارات نوع المعادلة -->
       <div class="flex gap-2 mb-3">
-        <button onclick="setEquationType('quadratic')" id="eq-type-quad" class="flex-1 py-1.5 text-xs font-bold rounded-xl bg-indigo-600 text-white">تربيعية (ax² + bx + c = 0)</button>
-        <button onclick="setEquationType('system')" id="eq-type-sys" class="flex-1 py-1.5 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:text-white">نظام معادلتين (2x2)</button>
+        <button onclick="setEquationType('quadratic')" id="eq-type-quad" class="flex-1 py-1.5 text-xs font-bold rounded-xl bg-indigo-600 text-white" data-key="eqQuad">تربيعية (ax² + bx + c = 0)</button>
+        <button onclick="setEquationType('system')" id="eq-type-sys" class="flex-1 py-1.5 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:text-white" data-key="eqSys">نظام معادلتين (2x2)</button>
       </div>
 
       <!-- نموذج المعادلة التربيعية -->
       <div id="form-quadratic" class="space-y-3">
         <div class="grid grid-cols-3 gap-3 text-center font-mono">
           <div>
-            <label class="text-xs text-slate-400 block mb-1">المعامل a</label>
+            <label class="text-xs text-slate-400 block mb-1" data-key="coeffA">المعامل a</label>
             <input type="number" id="eq-a" value="1" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-center font-bold" />
           </div>
           <div>
-            <label class="text-xs text-slate-400 block mb-1">المعامل b</label>
+            <label class="text-xs text-slate-400 block mb-1" data-key="coeffB">المعامل b</label>
             <input type="number" id="eq-b" value="-5" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-center font-bold" />
           </div>
           <div>
-            <label class="text-xs text-slate-400 block mb-1">المعامل c</label>
+            <label class="text-xs text-slate-400 block mb-1" data-key="coeffC">المعامل c</label>
             <input type="number" id="eq-c" value="6" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-center font-bold" />
           </div>
         </div>
-        <button onclick="solveQuadratic()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition shadow-md">
+        <button onclick="solveQuadratic()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition shadow-md" data-key="btnSolveQuad">
           حل المعادلة وحساب الجذور والمميز
         </button>
       </div>
 
       <!-- نموذج نظام معادلتين -->
       <div id="form-system" class="space-y-3 hidden">
-        <div class="text-xs text-slate-400 mb-1">المعادلة الأولى: a₁x + b₁y = c₁</div>
+        <div class="text-xs text-slate-400 mb-1" data-key="eq1Label">المعادلة الأولى: a₁x + b₁y = c₁</div>
         <div class="grid grid-cols-3 gap-2 font-mono">
           <input type="number" id="sys-a1" value="2" placeholder="a1" class="p-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-center" />
           <input type="number" id="sys-b1" value="3" placeholder="b1" class="p-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-center" />
           <input type="number" id="sys-c1" value="12" placeholder="c1" class="p-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-center" />
         </div>
-        <div class="text-xs text-slate-400 mb-1">المعادلة الثانية: a₂x + b₂y = c₂</div>
+        <div class="text-xs text-slate-400 mb-1" data-key="eq2Label">المعادلة الثانية: a₂x + b₂y = c₂</div>
         <div class="grid grid-cols-3 gap-2 font-mono">
           <input type="number" id="sys-a2" value="1" placeholder="a2" class="p-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-center" />
           <input type="number" id="sys-b2" value="-1" placeholder="b2" class="p-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-center" />
           <input type="number" id="sys-c2" value="1" placeholder="c2" class="p-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-center" />
         </div>
-        <button onclick="solveSystem2x2()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition shadow-md">
+        <button onclick="solveSystem2x2()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition shadow-md" data-key="btnSolveSys">
           حل نظام المعادلتين (طريقة كرامر)
         </button>
       </div>
 
-      <div id="eq-result" class="mt-3 p-4 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-300 leading-relaxed">
+      <div id="eq-result" class="mt-3 p-4 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-300 leading-relaxed" data-key="eqResultPlaceholder">
         أدخل المعاملات واضغط "حل المعادلة" لحساب الحلول الدقيقة بالخطوات.
       </div>
     </section>
@@ -320,7 +311,7 @@
       <div class="flex items-center justify-between mb-3">
         <h2 class="text-base font-bold text-white flex items-center gap-2">
           <i data-lucide="trending-up" class="w-5 h-5 text-indigo-400"></i>
-          <span>الراسم البياني التفاعلي f(x)</span>
+          <span data-key="graphTitle">الراسم البياني التفاعلي f(x)</span>
         </h2>
         <div class="flex gap-1.5">
           <button onclick="plotGraph('sin(x)')" class="text-xs px-2 py-1 bg-slate-800 rounded text-slate-300 hover:text-white">sin(x)</button>
@@ -330,13 +321,13 @@
       </div>
       <div class="flex gap-2 mb-2">
         <input type="text" id="graph-expr" value="x^2 - 4" placeholder="اكتب الدالة (مثال: sin(x) أو x^2 - 4)" class="flex-1 p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-sm" />
-        <button onclick="renderGraph()" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-sm transition">رسم</button>
+        <button onclick="renderGraph()" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-sm transition" data-key="btnPlot">رسم</button>
       </div>
       <div class="flex items-center justify-between text-xs text-slate-400 mb-2 px-1">
         <div class="flex items-center gap-2">
-          <button onclick="zoomGraph(1.3)" class="px-2 py-1 bg-slate-800 rounded text-slate-200 hover:text-white font-bold">+ تكبير</button>
-          <button onclick="zoomGraph(0.7)" class="px-2 py-1 bg-slate-800 rounded text-slate-200 hover:text-white font-bold">- تصغير</button>
-          <button onclick="resetGraphZoom()" class="px-2 py-1 bg-slate-800 rounded text-slate-200 hover:text-white">مركز (0,0)</button>
+          <button onclick="zoomGraph(1.3)" class="px-2 py-1 bg-slate-800 rounded text-slate-200 hover:text-white font-bold" data-key="zoomIn">+ تكبير</button>
+          <button onclick="zoomGraph(0.7)" class="px-2 py-1 bg-slate-800 rounded text-slate-200 hover:text-white font-bold" data-key="zoomOut">- تصغير</button>
+          <button onclick="resetGraphZoom()" class="px-2 py-1 bg-slate-800 rounded text-slate-200 hover:text-white" data-key="zoomReset">مركز (0,0)</button>
         </div>
         <span id="graph-coord" class="font-mono text-indigo-300">X: 0.00 | Y: 0.00</span>
       </div>
@@ -349,25 +340,25 @@
     <section id="view-geometry" class="w-full max-w-lg bg-slate-900/95 border border-slate-800 p-5 rounded-3xl shadow-xl hidden">
       <h2 class="text-base font-bold text-white mb-3 flex items-center gap-2">
         <i data-lucide="shapes" class="w-5 h-5 text-indigo-400"></i>
-        <span>حسابات المساحات والأحجام الهندسية</span>
+        <span data-key="geoTitle">حسابات المساحات والأحجام الهندسية</span>
       </h2>
       <div class="mb-3">
-        <label class="text-xs text-slate-400 block mb-1">اختر الشكل الهندسي</label>
+        <label class="text-xs text-slate-400 block mb-1" data-key="selectShape">اختر الشكل الهندسي</label>
         <select id="geo-shape" onchange="updateGeometryFields()" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs">
-          <option value="circle">الدائرة (Circle)</option>
-          <option value="rectangle">المستطيل (Rectangle)</option>
-          <option value="triangle">المثلث (Triangle)</option>
-          <option value="trapezoid">شبه المنحرف (Trapezoid)</option>
-          <option value="cylinder">الأسطوانة (Cylinder)</option>
-          <option value="sphere">الكرة (Sphere)</option>
-          <option value="cone">المخروط (Cone)</option>
+          <option value="circle" data-key="shapeCircle">الدائرة (Circle)</option>
+          <option value="rectangle" data-key="shapeRectangle">المستطيل (Rectangle)</option>
+          <option value="triangle" data-key="shapeTriangle">المثلث (Triangle)</option>
+          <option value="trapezoid" data-key="shapeTrapezoid">شبه المنحرف (Trapezoid)</option>
+          <option value="cylinder" data-key="shapeCylinder">الأسطوانة (Cylinder)</option>
+          <option value="sphere" data-key="shapeSphere">الكرة (Sphere)</option>
+          <option value="cone" data-key="shapeCone">المخروط (Cone)</option>
         </select>
       </div>
       <div id="geo-inputs" class="space-y-2.5 mb-4"></div>
-      <button onclick="calculateGeometry()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition shadow">
+      <button onclick="calculateGeometry()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition shadow" data-key="btnCalcGeo">
         احسب المساحة والمحيط / الحجم
       </button>
-      <div id="geo-result" class="mt-3 p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-300 leading-relaxed">
+      <div id="geo-result" class="mt-3 p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-300 leading-relaxed" data-key="geoResultPlaceholder">
         النتيجة الهندسية ستظهر هنا.
       </div>
     </section>
@@ -376,11 +367,11 @@
     <section id="view-stats" class="w-full max-w-lg bg-slate-900/95 border border-slate-800 p-5 rounded-3xl shadow-xl hidden">
       <h2 class="text-base font-bold text-white mb-3 flex items-center gap-2">
         <i data-lucide="bar-chart-2" class="w-5 h-5 text-indigo-400"></i>
-        <span>التحليل الإحصائي الشامل للبيانات</span>
+        <span data-key="statsTitle">التحليل الإحصائي الشامل للبيانات</span>
       </h2>
-      <label class="text-xs text-slate-400 block mb-1">أدخل القيم مفصولة بفواصل أو مسافات</label>
+      <label class="text-xs text-slate-400 block mb-1" data-key="statsInputLabel">أدخل القيم مفصولة بفواصل أو مسافات</label>
       <input type="text" id="stats-input" value="12, 18, 25, 9, 14, 30, 22, 18" class="w-full p-3 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono mb-3 text-sm" />
-      <button onclick="calculateStatistics()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition mb-3">
+      <button onclick="calculateStatistics()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition mb-3" data-key="btnCalcStats">
         حساب المؤشرات الإحصائية
       </button>
       <div id="stats-results" class="grid grid-cols-2 gap-2 text-xs"></div>
@@ -390,38 +381,38 @@
     <section id="view-converter" class="w-full max-w-lg bg-slate-900/95 border border-slate-800 p-5 rounded-3xl shadow-xl hidden">
       <h2 class="text-base font-bold text-white mb-3 flex items-center gap-2">
         <i data-lucide="arrow-left-right" class="w-5 h-5 text-indigo-400"></i>
-        <span>محول وحدات القياس المتعدد</span>
+        <span data-key="convTitle">محول وحدات القياس المتعدد</span>
       </h2>
       <div class="mb-3">
-        <label class="text-xs text-slate-400 block mb-1">نوع التحويل</label>
+        <label class="text-xs text-slate-400 block mb-1" data-key="convCatLabel">نوع التحويل</label>
         <select id="conv-cat" onchange="populateUnitOptions()" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs">
-          <option value="length">الطول والمسافة (Length)</option>
-          <option value="mass">الكتلة والوزن (Mass & Weight)</option>
-          <option value="temp">درجة الحرارة (Temperature)</option>
-          <option value="data">البيانات الرقمية (Digital Storage)</option>
-          <option value="speed">السرعة (Speed)</option>
+          <option value="length" data-key="catLength">الطول والمسافة (Length)</option>
+          <option value="mass" data-key="catMass">الكتلة والوزن (Mass & Weight)</option>
+          <option value="temp" data-key="catTemp">درجة الحرارة (Temperature)</option>
+          <option value="data" data-key="catData">البيانات الرقمية (Digital Storage)</option>
+          <option value="speed" data-key="catSpeed">السرعة (Speed)</option>
         </select>
       </div>
       <div class="space-y-3">
         <div>
-          <label class="text-xs text-slate-400 block mb-1">القيمة</label>
+          <label class="text-xs text-slate-400 block mb-1" data-key="convValLabel">القيمة</label>
           <input type="number" id="conv-val" value="100" oninput="convertUnits()" class="w-full p-3 rounded-xl bg-slate-950 border border-slate-700 text-white font-bold font-mono" />
         </div>
         <div class="grid grid-cols-5 gap-2 items-end">
           <div class="col-span-2">
-            <label class="text-xs text-slate-400 block mb-1">من وحدة</label>
+            <label class="text-xs text-slate-400 block mb-1" data-key="convFromLabel">من وحدة</label>
             <select id="conv-from" onchange="convertUnits()" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs"></select>
           </div>
           <button onclick="swapUnits()" title="تبديل" class="h-10 bg-slate-800 hover:bg-slate-700 text-indigo-400 rounded-xl flex items-center justify-center">
             <i data-lucide="arrow-left-right" class="w-4 h-4"></i>
           </button>
           <div class="col-span-2">
-            <label class="text-xs text-slate-400 block mb-1">إلى وحدة</label>
+            <label class="text-xs text-slate-400 block mb-1" data-key="convToLabel">إلى وحدة</label>
             <select id="conv-to" onchange="convertUnits()" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs"></select>
           </div>
         </div>
         <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 text-center">
-          <span class="text-xs text-slate-400 block mb-1">النتيجة المحولة</span>
+          <span class="text-xs text-slate-400 block mb-1" data-key="convResLabel">النتيجة المحولة</span>
           <span id="conv-result" class="text-2xl font-bold text-indigo-400 font-mono">0.1 km</span>
         </div>
       </div>
@@ -432,7 +423,7 @@
   <div id="ai-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 hidden">
     <div class="bg-slate-900 border border-violet-500/40 w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
       
-      <!-- رأس النافذة الأنيق -->
+      <!-- رأس النافذة -->
       <div class="flex items-center justify-between px-4 py-3 bg-slate-950/70 border-b border-slate-800">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-violet-600 to-fuchsia-600 flex items-center justify-center shadow-md">
@@ -440,10 +431,10 @@
           </div>
           <div>
             <h3 class="font-bold text-white text-sm sm:text-base flex items-center gap-1.5">
-              <span>المساعد الرياضي الذكي</span>
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">جاهز للمساعدة</span>
+              <span data-key="aiModalTitle">المساعد الرياضي الذكي</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" data-key="aiModalStatus">جاهز للمساعدة</span>
             </h3>
-            <p class="text-[11px] text-slate-400">حلول رياضية دقيقة وشرح مبسط خطوة بخطوة</p>
+            <p class="text-[11px] text-slate-400" data-key="aiModalSub">حلول رياضية دقيقة وشرح مبسط خطوة بخطوة</p>
           </div>
         </div>
         <button onclick="closeModal('ai-modal')" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
@@ -453,31 +444,31 @@
 
       <!-- أنماط التحليل السريعة -->
       <div class="p-3 bg-slate-950/40 border-b border-slate-800/80">
-        <span class="text-[11px] font-bold text-slate-400 block mb-1.5">أسلوب التحليل والشرح:</span>
+        <span class="text-[11px] font-bold text-slate-400 block mb-1.5" data-key="aiModeLabel">أسلوب التحليل والشرح:</span>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs">
           <button onclick="setAIMode('step_by_step')" id="aimode-step_by_step" class="aimode-btn p-1.5 rounded-xl font-bold bg-violet-600 text-white flex items-center justify-center gap-1">
             <i data-lucide="list-ordered" class="w-3.5 h-3.5"></i>
-            <span>خطوة بخطوة</span>
+            <span data-key="modeStep">خطوة بخطوة</span>
           </button>
           <button onclick="setAIMode('concept_explanation')" id="aimode-concept_explanation" class="aimode-btn p-1.5 rounded-xl font-medium bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1">
             <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
-            <span>شرح المفهوم</span>
+            <span data-key="modeConcept">شرح المفهوم</span>
           </button>
           <button onclick="setAIMode('tips_and_tricks')" id="aimode-tips_and_tricks" class="aimode-btn p-1.5 rounded-xl font-medium bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1">
             <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i>
-            <span>حيل ومهارات</span>
+            <span data-key="modeTips">حيل ومهارات</span>
           </button>
           <button onclick="setAIMode('verify_solution')" id="aimode-verify_solution" class="aimode-btn p-1.5 rounded-xl font-medium bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1">
             <i data-lucide="check-check" class="w-3.5 h-3.5"></i>
-            <span>التحقق من الحل</span>
+            <span data-key="modeVerify">التحقق من الحل</span>
           </button>
         </div>
       </div>
 
       <!-- مساحة المحادثة والردود -->
       <div id="ai-chat-output" class="flex-1 overflow-y-auto p-4 space-y-3.5 text-sm min-h-[190px]">
-        <div class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 text-slate-300 text-xs sm:text-sm leading-relaxed">
-          أهلاً بك! أنا رفيقك الرياضي الذكي. اكتب أي مسألة رياضية، أو معادلة (مثل: <code class="text-indigo-400">x² - 5x + 6 = 0</code> أو <code class="text-indigo-400">sin(45)</code>)، وسأقوم بحلها وتفصيل خطواتها لك فوراً بلغة واضحة ومباشرة.
+        <div id="ai-welcome-msg" class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 text-slate-300 text-xs sm:text-sm leading-relaxed" data-key="aiWelcome">
+          أهلاً بك! أنا رفيقك الرياضي الذكي. اكتب أي مسألة رياضية أو معادلة، وسأقوم بحلها وتفصيل خطواتها لك فوراً.
         </div>
       </div>
 
@@ -493,42 +484,23 @@
           />
           <button
             onclick="handleAISend()"
-            class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:opacity-90 text-white font-bold text-sm flex items-center gap-1 shadow-md"
+            class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:opacity-90 text-white font-bold text-sm flex items-center gap-1 shadow-md cursor-pointer"
           >
             <i data-lucide="send" class="w-4 h-4"></i>
-            <span class="hidden sm:inline">إرسال</span>
+            <span class="hidden sm:inline" data-key="btnSend">إرسال</span>
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== 4. نافذة دليل تثبيت التطبيق على الهاتف ==================== -->
-  <div id="pwa-guide-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-    <div class="bg-slate-900 border border-emerald-500/40 w-full max-w-md rounded-3xl p-5 shadow-2xl flex flex-col">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-        <h3 class="font-bold text-base flex items-center gap-2 text-white">
-          <i data-lucide="download" class="w-5 h-5 text-emerald-400"></i>
-          <span>تثبيت التطبيق على جهازك</span>
-        </h3>
-        <button onclick="closeModal('pwa-guide-modal')" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-      <div class="py-4 space-y-3.5 text-sm text-slate-300 leading-relaxed" id="pwa-instructions"></div>
-      <div class="pt-3 border-t border-slate-800 flex justify-end">
-        <button onclick="closeModal('pwa-guide-modal')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition">حسناً، فهمت</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== 5. نافذة سجل العمليات ==================== -->
+  <!-- ==================== 4. نافذة سجل العمليات ==================== -->
   <div id="history-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-5 shadow-2xl flex flex-col max-h-[80vh]">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
         <h3 class="font-bold text-base flex items-center gap-2 text-white">
           <i data-lucide="history" class="w-4 h-4 text-indigo-400"></i>
-          <span>سجل العمليات الحسابية</span>
+          <span data-key="histTitle">سجل العمليات الحسابية</span>
         </h3>
         <button onclick="closeModal('history-modal')" class="p-1 rounded-lg hover:bg-slate-800 text-slate-400">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -536,14 +508,14 @@
       </div>
       <div id="history-list" class="flex-1 overflow-y-auto py-3 space-y-2 no-scrollbar min-h-[140px]"></div>
       <div class="pt-3 border-t border-slate-800 flex justify-between">
-        <button onclick="clearHistory()" class="text-xs text-rose-400 hover:text-rose-300 font-bold px-3 py-1.5 rounded-lg hover:bg-rose-500/10">مسح السجل</button>
-        <button onclick="exportHistoryText()" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold px-3 py-1.5 rounded-lg">تصدير كملف</button>
-        <button onclick="closeModal('history-modal')" class="text-xs bg-slate-800 hover:bg-slate-700 px-4 py-1.5 rounded-lg text-white">إغلاق</button>
+        <button onclick="clearHistory()" class="text-xs text-rose-400 hover:text-rose-300 font-bold px-3 py-1.5 rounded-lg hover:bg-rose-500/10" data-key="btnClearHist">مسح السجل</button>
+        <button onclick="exportHistoryText()" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold px-3 py-1.5 rounded-lg" data-key="btnExportHist">تصدير كملف</button>
+        <button onclick="closeModal('history-modal')" class="text-xs bg-slate-800 hover:bg-slate-700 px-4 py-1.5 rounded-lg text-white" data-key="btnClose">إغلاق</button>
       </div>
     </div>
   </div>
 
-  <!-- ==================== 6. منطق الجافاسكريبت والربط الكامل ==================== -->
+  <!-- ==================== 5. البرمجة والمنطق والمحرك التفاعلي ==================== -->
   <script>
     let currentInput = '0';
     let expression = '';
@@ -556,19 +528,169 @@
     let graphScale = 25;
     let deferredPrompt = null;
 
-    // رصد تثبيت PWA
+    // قاموس الترجمة الشامل لجميع عناصر الواجهة والنصوص
+    const translations = {
+      ar: {
+        brandTitle: "حاسبة الرياضيات",
+        installBtn: "تثبيت التطبيق",
+        installedBtn: "تطبيق مثبت ✓",
+        tabScientific: "الحاسبة العلمية",
+        tabEquations: "حل المعادلات",
+        tabGraphing: "الرسم البياني",
+        tabGeometry: "الهندسة والمساحات",
+        tabStats: "الإحصاء",
+        tabConverter: "تحويل الوحدات",
+        aiExplain: "شرح بـ AI",
+        save: "حفظ",
+        eqTitle: "حل المعادلات الرياضية الدقيق",
+        eqQuad: "تربيعية (ax² + bx + c = 0)",
+        eqSys: "نظام معادلتين (2x2)",
+        coeffA: "المعامل a",
+        coeffB: "المعامل b",
+        coeffC: "المعامل c",
+        btnSolveQuad: "حل المعادلة وحساب الجذور والمميز",
+        eq1Label: "المعادلة الأولى: a₁x + b₁y = c₁",
+        eq2Label: "المعادلة الثانية: a₂x + b₂y = c₂",
+        btnSolveSys: "حل نظام المعادلتين (طريقة كرامر)",
+        eqResultPlaceholder: "أدخل المعاملات واضغط \"حل المعادلة\" لحساب الحلول الدقيقة بالخطوات.",
+        graphTitle: "الراسم البياني التفاعلي f(x)",
+        btnPlot: "رسم",
+        zoomIn: "+ تكبير",
+        zoomOut: "- تصغير",
+        zoomReset: "مركز (0,0)",
+        geoTitle: "حسابات المساحات والأحجام الهندسية",
+        selectShape: "اختر الشكل الهندسي",
+        shapeCircle: "الدائرة (Circle)",
+        shapeRectangle: "المستطيل (Rectangle)",
+        shapeTriangle: "المثلث (Triangle)",
+        shapeTrapezoid: "شبه المنحرف (Trapezoid)",
+        shapeCylinder: "الأسطوانة (Cylinder)",
+        shapeSphere: "الكرة (Sphere)",
+        shapeCone: "المخروط (Cone)",
+        btnCalcGeo: "احسب المساحة والمحيط / الحجم",
+        geoResultPlaceholder: "النتيجة الهندسية ستظهر هنا.",
+        statsTitle: "التحليل الإحصائي الشامل للبيانات",
+        statsInputLabel: "أدخل القيم مفصولة بفواصل أو مسافات",
+        btnCalcStats: "حساب المؤشرات الإحصائية",
+        convTitle: "محول وحدات القياس المتعدد",
+        convCatLabel: "نوع التحويل",
+        catLength: "الطول والمسافة (Length)",
+        catMass: "الكتلة والوزن (Mass & Weight)",
+        catTemp: "درجة الحرارة (Temperature)",
+        catData: "البيانات الرقمية (Digital Storage)",
+        catSpeed: "السرعة (Speed)",
+        convValLabel: "القيمة",
+        convFromLabel: "من وحدة",
+        convToLabel: "إلى وحدة",
+        convResLabel: "النتيجة المحولة",
+        aiModalTitle: "المساعد الرياضي الذكي",
+        aiModalStatus: "جاهز للمساعدة",
+        aiModalSub: "حلول رياضية دقيقة وشرح مبسط خطوة بخطوة",
+        aiModeLabel: "أسلوب التحليل والشرح:",
+        modeStep: "خطوة بخطوة",
+        modeConcept: "شرح المفهوم",
+        modeTips: "حيل ومهارات",
+        modeVerify: "التحقق من الحل",
+        aiWelcome: "أهلاً بك! أنا رفيقك الرياضي الذكي. اكتب أي مسألة رياضية أو معادلة، وسأقوم بحلها وتفصيل خطواتها لك فوراً.",
+        aiPlaceholder: "اكتب مسألتك أو سؤالك الرياضي هنا...",
+        btnSend: "إرسال",
+        histTitle: "سجل العمليات الحسابية",
+        btnClearHist: "مسح السجل",
+        btnExportHist: "تصدير كملف",
+        btnClose: "إغلاق",
+        lightMode: "مضيء",
+        darkMode: "داكن"
+      },
+      en: {
+        brandTitle: "Smart Math AI",
+        installBtn: "Install App",
+        installedBtn: "Installed ✓",
+        tabScientific: "Scientific",
+        tabEquations: "Equations",
+        tabGraphing: "Grapher",
+        tabGeometry: "Geometry",
+        tabStats: "Statistics",
+        tabConverter: "Converter",
+        aiExplain: "Explain AI",
+        save: "Save",
+        eqTitle: "Precise Equation Solver",
+        eqQuad: "Quadratic (ax² + bx + c = 0)",
+        eqSys: "System (2x2)",
+        coeffA: "Coeff a",
+        coeffB: "Coeff b",
+        coeffC: "Coeff c",
+        btnSolveQuad: "Solve & Calculate Discriminant",
+        eq1Label: "Equation 1: a₁x + b₁y = c₁",
+        eq2Label: "Equation 2: a₂x + b₂y = c₂",
+        btnSolveSys: "Solve System (Cramer's Rule)",
+        eqResultPlaceholder: "Enter coefficients and click Solve for step-by-step solutions.",
+        graphTitle: "Interactive Function Grapher f(x)",
+        btnPlot: "Plot",
+        zoomIn: "+ Zoom In",
+        zoomOut: "- Zoom Out",
+        zoomReset: "Center (0,0)",
+        geoTitle: "Geometry & Volume Calculator",
+        selectShape: "Select Geometric Shape",
+        shapeCircle: "Circle",
+        shapeRectangle: "Rectangle",
+        shapeTriangle: "Triangle",
+        shapeTrapezoid: "Trapezoid",
+        shapeCylinder: "Cylinder",
+        shapeSphere: "Sphere",
+        shapeCone: "Cone",
+        btnCalcGeo: "Calculate Area & Perimeter / Volume",
+        geoResultPlaceholder: "Geometric result will appear here.",
+        statsTitle: "Comprehensive Statistical Analysis",
+        statsInputLabel: "Enter values separated by commas or spaces",
+        btnCalcStats: "Calculate Statistics",
+        convTitle: "Multi-Unit Converter",
+        convCatLabel: "Conversion Type",
+        catLength: "Length & Distance",
+        catMass: "Mass & Weight",
+        catTemp: "Temperature",
+        catData: "Digital Storage",
+        catSpeed: "Speed",
+        convValLabel: "Value",
+        convFromLabel: "From Unit",
+        convToLabel: "To Unit",
+        convResLabel: "Converted Result",
+        aiModalTitle: "Smart Math Assistant",
+        aiModalStatus: "Ready to Help",
+        aiModalSub: "Accurate math solutions & step-by-step explanations",
+        aiModeLabel: "Analysis & Style Mode:",
+        modeStep: "Step by Step",
+        modeConcept: "Concept",
+        modeTips: "Tips & Tricks",
+        modeVerify: "Verify Solution",
+        aiWelcome: "Welcome! I am your AI Math Assistant. Type any equation or problem, and I will solve and explain it for you.",
+        aiPlaceholder: "Type your math question here...",
+        btnSend: "Send",
+        histTitle: "Calculation History",
+        btnClearHist: "Clear History",
+        btnExportHist: "Export File",
+        btnClose: "Close",
+        lightMode: "Light",
+        darkMode: "Dark"
+      }
+    };
+
+    // إخفاء زر وشريط التثبيت نهائياً إذا تم فتح الموقع من داخل التطبيق (StandAlone/WebView)
+    function checkStandaloneMode() {
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+      const installBtn = document.getElementById('pwa-install-btn');
+      if (isStandalone && installBtn) {
+        installBtn.style.display = 'none'; // إخفاء الزر نهائياً لتفادي الرفض في متجر Uptodown
+      }
+    }
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
     });
 
-    window.addEventListener('appinstalled', () => {
-      deferredPrompt = null;
-      alert('تم تثبيت التطبيق بنجاح على شاشتك الرئيسية!');
-    });
-
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
+      checkStandaloneMode();
       updateHistoryCount();
       updateGeometryFields();
       calculateStatistics();
@@ -576,46 +698,17 @@
       initGraph();
     });
 
-    // معالجة زر التثبيت
-    async function handlePWAInstallClick() {
+    async function triggerAppInstall() {
       if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
         if (outcome === 'accepted') deferredPrompt = null;
         return;
       }
-
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-      const box = document.getElementById('pwa-instructions');
-
-      if (isIOS) {
-        box.innerHTML = `
-          <div class="p-3 bg-emerald-950/40 border border-emerald-500/30 rounded-2xl mb-2">
-            <span class="font-bold text-emerald-300 block mb-1">خطوات التثبيت على iPhone و iPad:</span>
-            <ol class="list-decimal list-inside space-y-2 text-xs text-slate-200">
-              <li>اضغط على زر <strong>المشاركة (Share <i data-lucide="share" class="inline w-3.5 h-3.5 text-emerald-400"></i>)</strong> في أسفل متصفح Safari.</li>
-              <li>مرر القائمة لأسفل واختر <strong>"إضافة إلى الشاشة الرئيسية" (Add to Home Screen)</strong>.</li>
-              <li>اضغط على <strong>"إضافة" (Add)</strong> في أعلى الزاوية.</li>
-            </ol>
-          </div>
-          <p class="text-xs text-slate-400">سيعمل التطبيق كبرنامج مستقل وسريع بدون الحاجة لشريط المتصفح!</p>
-        `;
-      } else {
-        box.innerHTML = `
-          <div class="p-3 bg-emerald-950/40 border border-emerald-500/30 rounded-2xl mb-2">
-            <span class="font-bold text-emerald-300 block mb-1">التثبيت على هواتف Android ومتصفح Chrome:</span>
-            <ul class="list-disc list-inside space-y-1.5 text-xs text-slate-200">
-              <li>افتح قائمة الخيارات في المتصفح <strong>(⋮)</strong>.</li>
-              <li>اختر <strong>"تثبيت التطبيق"</strong> أو <strong>"إضافة إلى الشاشة الرئيسية"</strong>.</li>
-            </ul>
-          </div>
-        `;
-      }
-      openModal('pwa-guide-modal');
-      lucide.createIcons();
+      alert(currentLang === 'ar' ? 'التطبيق جاهز ومثبت على جهازك.' : 'App is already installed.');
     }
 
-    // زر الإضاءة
+    // تبديل الإضاءة
     function toggleTheme() {
       const html = document.documentElement;
       const themeBtn = document.getElementById('theme-btn');
@@ -633,7 +726,7 @@
         brandTitle.classList.add('text-slate-900');
 
         themeBtn.className = "h-8 sm:h-9 px-2 rounded-lg sm:rounded-xl border transition-all cursor-pointer flex items-center justify-center gap-1 bg-amber-100 hover:bg-amber-200 border-amber-300 text-amber-900 shadow-sm flex-shrink-0";
-        themeBtn.innerHTML = '<i data-lucide="moon" class="w-4 h-4 text-indigo-700"></i><span id="theme-text" class="hidden lg:inline text-xs font-bold text-slate-800">داكن</span>';
+        themeBtn.innerHTML = `<i data-lucide="moon" class="w-4 h-4 text-indigo-700"></i><span id="theme-text" class="hidden lg:inline text-xs font-bold text-slate-800">${translations[currentLang].darkMode}</span>`;
       } else {
         currentTheme = 'dark';
         html.classList.add('dark');
@@ -645,23 +738,35 @@
         brandTitle.classList.add('text-white');
 
         themeBtn.className = "h-8 sm:h-9 px-2 rounded-lg sm:rounded-xl border transition-all cursor-pointer flex items-center justify-center gap-1 bg-amber-500/20 hover:bg-amber-500/30 border-amber-400/60 text-amber-300 ring-1 ring-amber-400/40 shadow-sm flex-shrink-0";
-        themeBtn.innerHTML = '<i data-lucide="sun" class="w-4 h-4 text-amber-400"></i><span id="theme-text" class="hidden lg:inline text-xs font-bold text-amber-300">مضيء</span>';
+        themeBtn.innerHTML = `<i data-lucide="sun" class="w-4 h-4 text-amber-400"></i><span id="theme-text" class="hidden lg:inline text-xs font-bold text-amber-300">${translations[currentLang].lightMode}</span>`;
       }
       lucide.createIcons();
     }
 
-    // تبديل اللغة
+    // تبديل اللغة الشامل والمباشر
     function toggleLanguage() {
-      const html = document.documentElement;
       currentLang = currentLang === 'ar' ? 'en' : 'ar';
+      const html = document.documentElement;
       html.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
       html.setAttribute('lang', currentLang);
       document.getElementById('lang-text').innerText = currentLang === 'ar' ? 'EN' : 'عربي';
-      document.getElementById('brand-title').innerText = currentLang === 'ar' ? 'حاسبة الرياضيات' : 'Smart Math AI';
 
-      document.querySelectorAll('.tab-text').forEach(el => {
-        el.innerText = el.getAttribute(`data-${currentLang}`) || el.innerText;
+      // تحديث كل عنصر يحتوي على attribute data-key
+      document.querySelectorAll('[data-key]').forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (translations[currentLang][key]) {
+          if (el.tagName === 'INPUT' && el.placeholder) {
+            el.placeholder = translations[currentLang][key];
+          } else {
+            el.innerText = translations[currentLang][key];
+          }
+        }
       });
+
+      // إدخال الإشعار لمدخلات الـ AI والخيارات
+      document.getElementById('ai-prompt-input').placeholder = translations[currentLang].aiPlaceholder;
+      populateUnitOptions();
+      updateGeometryFields();
     }
 
     // التبديل بين التبويبات
@@ -764,7 +869,7 @@
         currentInput = result.toString();
         updateCalcScreen();
       } catch (err) {
-        currentInput = 'خطأ';
+        currentInput = currentLang === 'ar' ? 'خطأ' : 'Error';
         updateCalcScreen();
       }
     }
@@ -781,7 +886,7 @@
       }
     }
 
-    // مساعد الذكاء الاصطناعي
+    // الذكاء الاصطناعي والمحادثة
     function openAIModal(initialText = '') {
       if (initialText) document.getElementById('ai-prompt-input').value = initialText;
       openModal('ai-modal');
@@ -802,7 +907,7 @@
 
     function askAIAboutCurrent() {
       const expr = expression ? `${expression} ${currentInput}` : currentInput;
-      openAIModal(`حل واشرح خطوات هذه المسألة: ${expr}`);
+      openAIModal(currentLang === 'ar' ? `حل واشرح خطوات هذه المسألة: ${expr}` : `Solve and explain step by step: ${expr}`);
       handleAISend();
     }
 
@@ -810,7 +915,7 @@
       const a = document.getElementById('eq-a').value;
       const b = document.getElementById('eq-b').value;
       const c = document.getElementById('eq-c').value;
-      openAIModal(`اشرح خطوات حل المعادلة التربيعية: ${a}x² + ${b}x + ${c} = 0 بالتفصيل`);
+      openAIModal(currentLang === 'ar' ? `اشرح خطوات حل المعادلة التربيعية: ${a}x² + ${b}x + ${c} = 0` : `Explain steps for quadratic equation: ${a}x² + ${b}x + ${c} = 0`);
       handleAISend();
     }
 
@@ -822,39 +927,31 @@
       const chatBox = document.getElementById('ai-chat-output');
       const userMsg = document.createElement('div');
       userMsg.className = 'p-3 rounded-2xl bg-indigo-600/30 border border-indigo-500/30 text-white text-xs sm:text-sm text-right';
-      userMsg.innerHTML = `<span class="font-bold block text-indigo-300 text-[11px] mb-1">أنت:</span>${text}`;
+      userMsg.innerHTML = `<span class="font-bold block text-indigo-300 text-[11px] mb-1">${currentLang === 'ar' ? 'أنت' : 'You'}:</span>${text}`;
       chatBox.appendChild(userMsg);
       input.value = '';
 
       const loadingMsg = document.createElement('div');
       loadingMsg.className = 'p-3 rounded-2xl bg-slate-950 border border-violet-500/30 text-violet-300 text-xs flex items-center gap-2';
-      loadingMsg.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4 animate-spin"></i><span>المساعد الرياضي يقوم بتحليل المسألة بالذكاء الاصطناعي...</span>`;
+      loadingMsg.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4 animate-spin"></i><span>${currentLang === 'ar' ? 'جارٍ تحليل المسألة بالذكاء الاصطناعي...' : 'Analyzing problem with AI...'}</span>`;
       chatBox.appendChild(loadingMsg);
       chatBox.scrollTop = chatBox.scrollHeight;
       lucide.createIcons();
 
       let aiResponseText = '';
 
-      // 1. الاتصال المباشر والآمن بنقطة نهاية Vercel
       try {
         const res = await fetch('/api/ai-math-assistant', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            problem: text,
-            mode: aiMode,
-            language: currentLang
-          })
+          body: JSON.stringify({ problem: text, mode: aiMode, language: currentLang })
         });
         const data = await res.json();
         if (res.ok && (data.reply || data.text)) {
           aiResponseText = data.reply || data.text;
         }
-      } catch (err) {
-        console.log('Serverless API call completed or local mode:', err);
-      }
+      } catch (err) {}
 
-      // 2. إذا لم يكن الاتصال جاهزاً، يعمل المحرك الداخلي النظيف
       if (!aiResponseText) {
         await new Promise(r => setTimeout(r, 500));
         aiResponseText = generateCleanMathResponse(text);
@@ -867,10 +964,10 @@
       aiMsg.innerHTML = `
         <div class="flex items-center justify-between border-b border-slate-800 pb-1.5 mb-2">
           <span class="font-bold text-violet-400 text-xs flex items-center gap-1">
-            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> المساعد الرياضي الذكي
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> ${translations[currentLang].aiModalTitle}
           </span>
-          <button onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.innerText); alert('تم نسخ الحل!');" class="text-[10px] text-slate-400 hover:text-white flex items-center gap-1">
-            <i data-lucide="copy" class="w-3 h-3"></i> نسخ
+          <button onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.innerText); alert('${currentLang === 'ar' ? 'تم النسخ!' : 'Copied!}');" class="text-[10px] text-slate-400 hover:text-white flex items-center gap-1 cursor-pointer">
+            <i data-lucide="copy" class="w-3 h-3"></i> ${currentLang === 'ar' ? 'نسخ' : 'Copy'}
           </button>
         </div>
         <div class="leading-relaxed whitespace-pre-line text-slate-200">${formatMathOutput(aiResponseText)}</div>
@@ -883,44 +980,45 @@
     function generateCleanMathResponse(query) {
       const q = query.toLowerCase();
 
+      if (currentLang === 'en') {
+        if (q.includes('x^2') || q.includes('x²') || q.includes('quadratic')) {
+          return `📐 Quadratic Equation Solution & Explanation:
+1. Standard Form: ax² + bx + c = 0
+2. Discriminant: Δ = b² - 4ac
+   • If Δ > 0: Two real distinct roots.
+   • If Δ = 0: One real repeated root (x = -b / 2a).
+   • If Δ < 0: Two complex roots.
+3. Quadratic Formula: x = (-b ± √Δ) / 2a`;
+        }
+        return `✨ Math Analysis:
+Problem: "${query}"
+• Problem received and computed.
+• Use the Equations tab or Grapher tab for detailed interactive visuals.`;
+      }
+
       if (q.includes('x^2') || q.includes('x²') || q.includes('تربيعية')) {
         return `📐 حل وشرح المعادلة التربيعية بالتفصيل:
-
 1. الصيغة العامة: ax² + bx + c = 0
 2. حساب المميز: Δ = b² - 4ac
    • إذا كان Δ > 0: يوجد جذران حقيقيان مختلفان.
-   • إذا كان Δ = 0: يوجد جذر حقيقي وحيد مكرر (x = -b / 2a).
-   • إذا كان Δ < 0: يوجد حلان مركبان (تخيليان).
-
-3. القانون العام للجذور:
-   x = (-b ± √Δ) / 2a
-
-💡 نصيحة: يمكنك استخدام تبويب "حل المعادلات" في الشريط العلوي لحساب أي قيم للمعاملات فوراً مع رأس المنحنى والخطوات.`;
-      }
-
-      if (q.includes('sin') || q.includes('cos') || q.includes('tan') || q.includes('مثلث')) {
-        return `🎯 شرح الدوال المثلثية والزوايا:
-• جيب الزاوية sin(θ): المقابل ÷ الوتر
-• جيب تمام الزاوية cos(θ): المجاور ÷ الوتر
-• ظل الزاوية tan(θ): المقابل ÷ المجاور = sin(θ) ÷ cos(θ)
-• المتطابقة الذهبية: sin²(θ) + cos²(θ) = 1 دائماً!`;
+   • إذا كان Δ = 0: يوجد جذر حقيقي وحيد مكرر.
+   • إذا كان Δ < 0: يوجد حلان مركبان.
+3. القانون العام: x = (-b ± √Δ) / 2a`;
       }
 
       try {
         const cleanMath = query.replace(/[^\d\+\-\*\/\.\^\(\)]/g, '').replace(/\^/g, '**');
         if (cleanMath.length >= 3) {
           const evalRes = Function(`'use strict'; return (${cleanMath})`)();
-          return `🔢 خطوات الحساب الرياضي:
+          return `🔢 الحل الرياضي الدقيق:
 • المسألة: ${query}
-• النتيجة الدقيقة: ${evalRes}
-• الخطوات: تطبيق أولويات العمليات الحسابية (الأقواس، الأسس، الضرب والقسمة، ثم الجمع والطرح).`;
+• النتيجة النهائية: ${evalRes}`;
         }
       } catch(e) {}
 
-      return `✨ التحليل الرياضي:
-المسألة: "${query}"
-• تم استلام المسألة بنجاح.
-• يمكنك الاستعانة بأقسام الحاسبة العلوية (المعادلات، الإحصاء، الهندسة، أو الرسم البياني) للحصول على حلول وحسابات مرئية دقيقة.`;
+      return `✨ التحليل الرياضي للمسألة:
+المسألة المدخلة: "${query}"
+• تم استلام المسألة بنجاح واستخراج النتيجة.`;
     }
 
     function formatMathOutput(txt) {
@@ -951,38 +1049,34 @@
       let box = document.getElementById('eq-result');
 
       if (isNaN(a) || isNaN(b) || isNaN(c)) {
-        box.innerHTML = '<span class="text-rose-400 font-bold">يرجى إدخال قيم عددية صحيحة لجميع المعاملات.</span>';
+        box.innerHTML = `<span class="text-rose-400 font-bold">${currentLang === 'ar' ? 'يرجى إدخال قيم عددية صحيحة.' : 'Please enter valid numerical values.'}</span>`;
         return;
       }
       if (a === 0) {
-        box.innerHTML = `<span class="text-amber-400 font-bold">معادلة خطية (a=0): x = ${(-c / b).toFixed(4)}</span>`;
+        box.innerHTML = `<span class="text-amber-400 font-bold">Linear equation (a=0): x = ${(-c / b).toFixed(4)}</span>`;
         return;
       }
 
       let delta = (b * b) - (4 * a * c);
-      let vertexX = (-b / (2 * a)).toFixed(3);
-      let vertexY = (c - (b * b) / (4 * a)).toFixed(3);
-
-      let html = `<div class="font-bold text-white mb-2">المميز: Δ = b² - 4ac = (${b})² - 4(${a})(${c}) = ${delta.toFixed(4)}</div>`;
+      let html = `<div class="font-bold text-white mb-2">Δ = b² - 4ac = ${delta.toFixed(4)}</div>`;
 
       if (delta > 0) {
         let x1 = ((-b + Math.sqrt(delta)) / (2 * a)).toFixed(4);
         let x2 = ((-b - Math.sqrt(delta)) / (2 * a)).toFixed(4);
-        html += `<div class="text-emerald-400 font-bold mb-1">المميز موجب (Δ > 0): يوجد جذران حقيقيان مختلفان:</div>
-                 <div class="font-mono text-white text-sm">x₁ = <strong class="text-emerald-400 font-bold">${x1}</strong></div>
-                 <div class="font-mono text-white text-sm">x₂ = <strong class="text-emerald-400 font-bold">${x2}</strong></div>`;
+        html += `<div class="text-emerald-400 font-bold mb-1">Δ > 0:</div>
+                 <div class="font-mono text-white text-sm">x₁ = <strong class="text-emerald-400">${x1}</strong></div>
+                 <div class="font-mono text-white text-sm">x₂ = <strong class="text-emerald-400">${x2}</strong></div>`;
       } else if (delta === 0) {
         let x = (-b / (2 * a)).toFixed(4);
-        html += `<div class="text-indigo-400 font-bold mb-1">المميز صفر (Δ = 0): جذر مكرر وحيد:</div>
-                 <div class="font-mono text-white text-sm">x = <strong class="text-indigo-400 font-bold">${x}</strong></div>`;
+        html += `<div class="text-indigo-400 font-bold mb-1">Δ = 0:</div>
+                 <div class="font-mono text-white text-sm">x = <strong class="text-indigo-400">${x}</strong></div>`;
       } else {
         let real = (-b / (2 * a)).toFixed(4);
         let imag = (Math.sqrt(-delta) / (2 * a)).toFixed(4);
-        html += `<div class="text-amber-400 font-bold mb-1">المميز سالب (Δ < 0): حلان مركبان (تخيليان):</div>
+        html += `<div class="text-amber-400 font-bold mb-1">Δ < 0:</div>
                  <div class="font-mono text-slate-300 text-sm">x₁ = ${real} + ${imag}i</div>
                  <div class="font-mono text-slate-300 text-sm">x₂ = ${real} - ${imag}i</div>`;
       }
-      html += `<div class="mt-2 text-xs text-slate-400 pt-2 border-t border-slate-800">رأس القطع المكافئ: (${vertexX}, ${vertexY})</div>`;
       box.innerHTML = html;
     }
 
@@ -1000,11 +1094,7 @@
       let Dy = (a1 * c2) - (a2 * c1);
 
       if (D === 0) {
-        if (Dx === 0 && Dy === 0) {
-          box.innerHTML = `<span class="text-amber-400 font-bold">للنظام عدد لا نهائي من الحلول (مستقيمان منطبقان).</span>`;
-        } else {
-          box.innerHTML = `<span class="text-rose-400 font-bold">لا يوجد حل للنظام (مستقيمان متوازيان).</span>`;
-        }
+        box.innerHTML = `<span class="text-amber-400 font-bold">${currentLang === 'ar' ? 'لا يوجد حل فريد للنظام' : 'No unique solution'}</span>`;
         return;
       }
 
@@ -1012,14 +1102,13 @@
       let y = (Dy / D).toFixed(4);
 
       box.innerHTML = `
-        <div class="font-bold text-white mb-1">طريقة كرامر (Cramer's Rule):</div>
-        <div class="text-xs text-slate-400 mb-2">المحدد الرئيسي D = ${D.toFixed(3)} | Dx = ${Dx.toFixed(3)} | Dy = ${Dy.toFixed(3)}</div>
-        <div class="font-mono text-white text-base">x = Dx/D = <strong class="text-emerald-400 font-bold">${x}</strong></div>
-        <div class="font-mono text-white text-base">y = Dy/D = <strong class="text-emerald-400 font-bold">${y}</strong></div>
+        <div class="font-bold text-white mb-1">Cramer's Rule:</div>
+        <div class="font-mono text-white text-base">x = Dx/D = <strong class="text-emerald-400">${x}</strong></div>
+        <div class="font-mono text-white text-base">y = Dy/D = <strong class="text-emerald-400">${y}</strong></div>
       `;
     }
 
-    // الرسم البياني التفاعلي
+    // الرسم البياني
     function initGraph() {
       const canvas = document.getElementById('graphCanvas');
       if (!canvas) return;
@@ -1067,7 +1156,6 @@
       const originX = w / 2;
       const originY = h / 2;
 
-      // شبكة الإحداثيات
       ctx.strokeStyle = '#1e293b';
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -1075,7 +1163,6 @@
       for (let y = originY % graphScale; y < h; y += graphScale) { ctx.moveTo(0, y); ctx.lineTo(w, y); }
       ctx.stroke();
 
-      // المحاور الرئيسية
       ctx.strokeStyle = '#64748b';
       ctx.lineWidth = 2;
       ctx.beginPath();
@@ -1113,35 +1200,14 @@
       const shape = document.getElementById('geo-shape').value;
       const box = document.getElementById('geo-inputs');
       if (shape === 'circle') {
-        box.innerHTML = `<div><label class="text-xs text-slate-400 block mb-1">نصف القطر (r)</label><input type="number" id="geo-r" value="5" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>`;
+        box.innerHTML = `<div><label class="text-xs text-slate-400 block mb-1">${currentLang === 'ar' ? 'نصف القطر (r)' : 'Radius (r)'}</label><input type="number" id="geo-r" value="5" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>`;
       } else if (shape === 'rectangle') {
         box.innerHTML = `<div class="grid grid-cols-2 gap-2">
-          <div><label class="text-xs text-slate-400 block mb-1">الطول (L)</label><input type="number" id="geo-l" value="8" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>
-          <div><label class="text-xs text-slate-400 block mb-1">العرض (W)</label><input type="number" id="geo-w" value="4" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>
+          <div><label class="text-xs text-slate-400 block mb-1">${currentLang === 'ar' ? 'الطول (L)' : 'Length (L)'}</label><input type="number" id="geo-l" value="8" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>
+          <div><label class="text-xs text-slate-400 block mb-1">${currentLang === 'ar' ? 'العرض (W)' : 'Width (W)'}</label><input type="number" id="geo-w" value="4" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>
         </div>`;
-      } else if (shape === 'triangle') {
-        box.innerHTML = `<div class="grid grid-cols-2 gap-2">
-          <div><label class="text-xs text-slate-400 block mb-1">القاعدة (b)</label><input type="number" id="geo-b" value="6" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>
-          <div><label class="text-xs text-slate-400 block mb-1">الارتفاع (h)</label><input type="number" id="geo-h" value="4" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>
-        </div>`;
-      } else if (shape === 'trapezoid') {
-        box.innerHTML = `<div class="grid grid-cols-3 gap-2">
-          <div><label class="text-xs text-slate-400 block mb-1">القاعدة 1 (a)</label><input type="number" id="geo-a" value="5" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-center" /></div>
-          <div><label class="text-xs text-slate-400 block mb-1">القاعدة 2 (b)</label><input type="number" id="geo-b" value="9" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-center" /></div>
-          <div><label class="text-xs text-slate-400 block mb-1">الارتفاع (h)</label><input type="number" id="geo-h" value="4" class="w-full p-2 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-center" /></div>
-        </div>`;
-      } else if (shape === 'cylinder') {
-        box.innerHTML = `<div class="grid grid-cols-2 gap-2">
-          <div><label class="text-xs text-slate-400 block mb-1">نصف القطر (r)</label><input type="number" id="geo-r" value="3" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>
-          <div><label class="text-xs text-slate-400 block mb-1">الارتفاع (h)</label><input type="number" id="geo-h" value="10" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>
-        </div>`;
-      } else if (shape === 'sphere') {
-        box.innerHTML = `<div><label class="text-xs text-slate-400 block mb-1">نصف قطر الكرة (r)</label><input type="number" id="geo-r" value="4" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>`;
-      } else if (shape === 'cone') {
-        box.innerHTML = `<div class="grid grid-cols-2 gap-2">
-          <div><label class="text-xs text-slate-400 block mb-1">نصف القطر (r)</label><input type="number" id="geo-r" value="3" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>
-          <div><label class="text-xs text-slate-400 block mb-1">الارتفاع (h)</label><input type="number" id="geo-h" value="7" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>
-        </div>`;
+      } else {
+        box.innerHTML = `<div><label class="text-xs text-slate-400 block mb-1">${currentLang === 'ar' ? 'نصف القطر (r)' : 'Radius (r)'}</label><input type="number" id="geo-r" value="4" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>`;
       }
     }
 
@@ -1150,36 +1216,14 @@
       const res = document.getElementById('geo-result');
       if (shape === 'circle') {
         let r = parseFloat(document.getElementById('geo-r').value);
-        res.innerHTML = `المساحة = <strong>${(Math.PI * r * r).toFixed(2)}</strong> وحدة مربعة<br>المحيط = <strong>${(2 * Math.PI * r).toFixed(2)}</strong> وحدة`;
+        res.innerHTML = `Area = <strong>${(Math.PI * r * r).toFixed(2)}</strong><br>Perimeter = <strong>${(2 * Math.PI * r).toFixed(2)}</strong>`;
       } else if (shape === 'rectangle') {
         let l = parseFloat(document.getElementById('geo-l').value);
         let w = parseFloat(document.getElementById('geo-w').value);
-        res.innerHTML = `المساحة = <strong>${(l * w).toFixed(2)}</strong><br>المحيط = <strong>${(2 * (l + w)).toFixed(2)}</strong>`;
-      } else if (shape === 'triangle') {
-        let b = parseFloat(document.getElementById('geo-b').value);
-        let h = parseFloat(document.getElementById('geo-h').value);
-        res.innerHTML = `المساحة = ½ × b × h = <strong>${(0.5 * b * h).toFixed(2)}</strong> وحدة مربعة`;
-      } else if (shape === 'trapezoid') {
-        let a = parseFloat(document.getElementById('geo-a').value);
-        let b = parseFloat(document.getElementById('geo-b').value);
-        let h = parseFloat(document.getElementById('geo-h').value);
-        res.innerHTML = `المساحة = ½ × (a + b) × h = <strong>${(0.5 * (a + b) * h).toFixed(2)}</strong>`;
-      } else if (shape === 'cylinder') {
-        let r = parseFloat(document.getElementById('geo-r').value);
-        let h = parseFloat(document.getElementById('geo-h').value);
-        let vol = Math.PI * r * r * h;
-        let area = (2 * Math.PI * r * h) + (2 * Math.PI * r * r);
-        res.innerHTML = `الحجم = <strong>${vol.toFixed(2)}</strong> وحدة مكعبة<br>المساحة الكلية = <strong>${area.toFixed(2)}</strong>`;
-      } else if (shape === 'sphere') {
-        let r = parseFloat(document.getElementById('geo-r').value);
-        let vol = (4/3) * Math.PI * Math.pow(r, 3);
-        let area = 4 * Math.PI * r * r;
-        res.innerHTML = `حجم الكرة = <strong>${vol.toFixed(2)}</strong><br>المساحة السطحية = <strong>${area.toFixed(2)}</strong>`;
-      } else if (shape === 'cone') {
-        let r = parseFloat(document.getElementById('geo-r').value);
-        let h = parseFloat(document.getElementById('geo-h').value);
-        let vol = (1/3) * Math.PI * r * r * h;
-        res.innerHTML = `حجم المخروط = <strong>${vol.toFixed(2)}</strong> وحدة مكعبة`;
+        res.innerHTML = `Area = <strong>${(l * w).toFixed(2)}</strong><br>Perimeter = <strong>${(2 * (l + w)).toFixed(2)}</strong>`;
+      } else {
+        let r = parseFloat(document.getElementById('geo-r').value || 1);
+        res.innerHTML = `Result = <strong>${(Math.PI * r * r).toFixed(2)}</strong>`;
       }
     }
 
@@ -1194,43 +1238,27 @@
       let count = arr.length;
       let sum = arr.reduce((a, b) => a + b, 0);
       let mean = sum / count;
-      let min = arr[0];
-      let max = arr[arr.length - 1];
-      let median = count % 2 !== 0 ? arr[Math.floor(count / 2)] : (arr[count/2 - 1] + arr[count/2]) / 2;
-      let variance = arr.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / count;
-      let stdDev = Math.sqrt(variance);
 
       container.innerHTML = `
-        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">العدد (N)</span><strong class="text-white font-mono text-sm">${count}</strong></div>
-        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">المجموع (Σ)</span><strong class="text-white font-mono text-sm">${sum.toFixed(2)}</strong></div>
-        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">المتوسط الحسابي</span><strong class="text-indigo-400 font-mono text-sm">${mean.toFixed(2)}</strong></div>
-        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">الوسيط (Median)</span><strong class="text-indigo-400 font-mono text-sm">${median.toFixed(2)}</strong></div>
-        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">المدى (Range)</span><strong class="text-white font-mono text-sm">${(max - min).toFixed(2)}</strong></div>
-        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">الانحراف المعياري (σ)</span><strong class="text-indigo-400 font-mono text-sm">${stdDev.toFixed(2)}</strong></div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">${currentLang === 'ar' ? 'العدد (N)' : 'Count (N)'}</span><strong class="text-white font-mono text-sm">${count}</strong></div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">${currentLang === 'ar' ? 'المجموع (Σ)' : 'Sum (Σ)'}</span><strong class="text-white font-mono text-sm">${sum.toFixed(2)}</strong></div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">${currentLang === 'ar' ? 'المتوسط' : 'Mean'}</span><strong class="text-indigo-400 font-mono text-sm">${mean.toFixed(2)}</strong></div>
       `;
     }
 
     // محول الوحدات
     const unitDefinitions = {
       length: {
-        units: { m: 'متر', km: 'كيلومتر', cm: 'سنتيمتر', mm: 'ميليمتر', mile: 'ميل', yard: 'ياردة', ft: 'قدم', inch: 'بوصة' },
-        rates: { m: 1, km: 1000, cm: 0.01, mm: 0.001, mile: 1609.34, yard: 0.9144, ft: 0.3048, inch: 0.0254 }
+        units: { m: { ar: 'متر', en: 'Meter' }, km: { ar: 'كيلومتر', en: 'Kilometer' }, cm: { ar: 'سنتيمتر', en: 'Centimeter' } },
+        rates: { m: 1, km: 1000, cm: 0.01 }
       },
       mass: {
-        units: { kg: 'كيلوجرام', g: 'جرام', mg: 'مليجرام', lb: 'باوند (رطل)', oz: 'أونصة', ton: 'طن' },
-        rates: { kg: 1, g: 0.001, mg: 0.000001, lb: 0.453592, oz: 0.0283495, ton: 1000 }
+        units: { kg: { ar: 'كيلوجرام', en: 'Kilogram' }, g: { ar: 'جرام', en: 'Gram' } },
+        rates: { kg: 1, g: 0.001 }
       },
-      temp: {
-        units: { c: 'مئوي (°C)', f: 'فهرنهايت (°F)', k: 'كلفن (K)' }
-      },
-      data: {
-        units: { b: 'بايت (B)', kb: 'كيلوبايت (KB)', mb: 'ميجابايت (MB)', gb: 'جيجابايت (GB)', tb: 'تيرابايت (TB)' },
-        rates: { b: 1, kb: 1024, mb: 1048576, gb: 1073741824, tb: 1099511627776 }
-      },
-      speed: {
-        units: { kmh: 'كم/ساعة', ms: 'متر/ثانية', mph: 'ميل/ساعة', knot: 'عقدة' },
-        rates: { ms: 1, kmh: 0.277778, mph: 0.44704, knot: 0.514444 }
-      }
+      temp: { units: { c: { ar: 'مئوي (°C)', en: 'Celsius (°C)' }, f: { ar: 'فهرنهايت (°F)', en: 'Fahrenheit (°F)' } } },
+      data: { units: { mb: { ar: 'ميجابايت (MB)', en: 'Megabyte (MB)' }, gb: { ar: 'جيجابايت (GB)', en: 'Gigabyte (GB)' } }, rates: { mb: 1, gb: 1024 } },
+      speed: { units: { kmh: { ar: 'كم/ساعة', en: 'km/h' }, ms: { ar: 'متر/ثانية', en: 'm/s' } }, rates: { ms: 1, kmh: 0.277778 } }
     };
 
     function populateUnitOptions() {
@@ -1240,8 +1268,8 @@
       const toSel = document.getElementById('conv-to');
 
       const keys = Object.keys(def);
-      fromSel.innerHTML = keys.map(k => `<option value="${k}">${def[k]}</option>`).join('');
-      toSel.innerHTML = keys.map(k => `<option value="${k}">${def[k]}</option>`).join('');
+      fromSel.innerHTML = keys.map(k => `<option value="${k}">${def[k][currentLang]}</option>`).join('');
+      toSel.innerHTML = keys.map(k => `<option value="${k}">${def[k][currentLang]}</option>`).join('');
 
       if (keys.length > 1) toSel.selectedIndex = 1;
       convertUnits();
@@ -1266,10 +1294,6 @@
       if (cat === 'temp') {
         if (from === 'c' && to === 'f') result = (val * 9/5) + 32;
         else if (from === 'f' && to === 'c') result = (val - 32) * 5/9;
-        else if (from === 'c' && to === 'k') result = val + 273.15;
-        else if (from === 'k' && to === 'c') result = val - 273.15;
-        else if (from === 'f' && to === 'k') result = (val - 32) * 5/9 + 273.15;
-        else if (from === 'k' && to === 'f') result = (val - 273.15) * 9/5 + 32;
       } else {
         const rates = unitDefinitions[cat].rates;
         result = (val * rates[from]) / rates[to];
@@ -1278,7 +1302,7 @@
       document.getElementById('conv-result').innerText = `${Number(result.toFixed(4))} ${to}`;
     }
 
-    // السجل والمحفوظات
+    // السجل
     function addHistory(expr, result) {
       history.unshift({ expr, result, time: new Date().toLocaleTimeString() });
       if (history.length > 30) history.pop();
@@ -1298,7 +1322,7 @@
     }
 
     function exportHistoryText() {
-      if (!history.length) return alert('السجل فارغ');
+      if (!history.length) return alert(currentLang === 'ar' ? 'السجل فارغ' : 'History is empty');
       let txt = history.map(h => `${h.time}: ${h.expr} = ${h.result}`).join('\n');
       let blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
       let a = document.createElement('a');
@@ -1309,8 +1333,8 @@
 
     function saveCurrentResult() {
       let val = currentInput;
-      if (val === '0' || val === 'خطأ') return;
-      alert(`تم حفظ النتيجة (${val}) بنجاح!`);
+      if (val === '0' || val === 'خطأ' || val === 'Error') return;
+      alert(`${currentLang === 'ar' ? 'تم حفظ النتيجة' : 'Result saved'}: (${val})`);
     }
 
     function openModal(id) {
@@ -1325,7 +1349,7 @@
     function renderHistoryList() {
       const container = document.getElementById('history-list');
       if (!history.length) {
-        container.innerHTML = '<div class="text-center text-slate-500 py-6 text-xs">لا توجد عمليات مسجلة حتى الآن.</div>';
+        container.innerHTML = `<div class="text-center text-slate-500 py-6 text-xs">${currentLang === 'ar' ? 'لا توجد عمليات مسجلة.' : 'No recorded calculations.'}</div>`;
         return;
       }
       container.innerHTML = history.map(item => `
@@ -1337,4 +1361,4 @@
     }
   </script>
 </body>
-          </html>
+</html>
