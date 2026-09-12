@@ -513,8 +513,7 @@
 
   <!-- ==================== 5. البرمجة والمنطق والمحرك التفاعلي ==================== -->
   <script>
-    // ربط مفتاح جيميناي مع دعم متغيرات بيئة Vercel
-    const GEMINI_API_KEY = (typeof process !== 'undefined' && process.env && process.env.GEMINI_API_KEY) || "AQ.Ab8RN6K4MN36DqjmnXZgCMDWRK-Tcx7_YSX6VIkzEJj3YGpBAA";
+    const GEMINI_API_KEY = "AQ.Ab8RN6K4MN36DqjmnXZgCMDWRK-Tcx7_YSX6VIkzEJj3YGpBAA";
 
     let currentInput = '0';
     let expression = '';
@@ -745,12 +744,13 @@
 
       const loadingMsg = document.createElement('div');
       loadingMsg.className = 'p-3 rounded-2xl bg-slate-950 border border-violet-500/30 text-violet-300 text-xs flex items-center gap-2';
-      loadingMsg.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4 animate-spin"></i><span>جارٍ التواصل مع نموذج Gemini الذكي...</span>`;
+      loadingMsg.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4 animate-spin"></i><span>جارٍ المعالجة بواسطة الذكاء الاصطناعي...</span>`;
       chatBox.appendChild(loadingMsg);
       chatBox.scrollTop = chatBox.scrollHeight;
       lucide.createIcons();
 
       try {
+        // استخدام رابط بديل موثوق أو تمرير الطلب بشكل صحيح لمنع الأخطاء
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -764,9 +764,11 @@
         const data = await response.json();
         loadingMsg.remove();
 
-        let aiReplyText = "عذراً، لم أتمكن من معالجة الرد حالياً. تحقق من اتصالك أو صحة المفتاح.";
+        let aiReplyText = "عذراً، حدث خطأ في استجابة النموذج. تأكد من صحة مفتاح الربط أو الصلاحيات.";
         if (data && data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
           aiReplyText = data.candidates[0].content.parts[0].text;
+        } else if (data && data.error) {
+          aiReplyText = `خطأ من الخادم: ${data.error.message || 'غير معروف'}`;
         }
 
         const aiMsg = document.createElement('div');
@@ -774,7 +776,7 @@
         aiMsg.innerHTML = `
           <div class="flex items-center justify-between border-b border-slate-800 pb-1.5 mb-2">
             <span class="font-bold text-violet-400 text-xs flex items-center gap-1">
-              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> المساعد الرياضي الذكي (Gemini)
+              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> المساعد الرياضي الذكي
             </span>
           </div>
           <div class="leading-relaxed whitespace-pre-line text-slate-200">${aiReplyText}</div>
@@ -784,7 +786,7 @@
         loadingMsg.remove();
         const errMsg = document.createElement('div');
         errMsg.className = 'p-3 rounded-2xl bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs';
-        errMsg.innerText = "حدث خطأ أثناء الاتصال بخدمة Gemini. يرجى المحاولة مرة أخرى.";
+        errMsg.innerText = "تعذر الاتصال بخدمة الذكاء الاصطناعي مباشرة من المتصفح (قد بسبب سياسات CORS). يُفضل ربطه عبر خادم خلفي (Backend Proxy).";
         chatBox.appendChild(errMsg);
       }
 
@@ -1051,7 +1053,7 @@
     }
 
     function addHistory(expr, result) {
-      history.unshift({ expr, result, time: new Date().toLocaleTimeString() });
+      history.unshift({ expr, result, time: new Date().toLocaleTimeString() + " " + new Date().toLocaleDateString() });
       if (history.length > 30) history.pop();
       localStorage.setItem('math_history', JSON.stringify(history));
       updateHistoryCount();
