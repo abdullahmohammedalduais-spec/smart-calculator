@@ -7,15 +7,15 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="حاسبة الرياضيات" />
-  <title>حاسبة الرياضيات الذكية المتقدمة</title>
+  <meta name="apple-mobile-web-app-title" content="SMART-CALCULATOR" />
+  <title>SMART-CALCULATOR</title>
 
   <!-- أيقونة الويب المضمنة PWA Icon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50%' y='68%' font-size='55' font-weight='900' fill='white' text-anchor='middle' font-family='sans-serif'>∑</text></svg>" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50%' y='68%' font-size='55' font-weight='900' fill='white' text-anchor='middle' font-family='sans-serif'>∑</text></svg>" />
 
   <!-- ملف تعريف تثبيت التطبيق PWA Manifest لجميع الأجهزة (كمبيوتر، لابتوب، موبايل) -->
-  <link rel="manifest" href='data:application/manifest+json,{"id":"/","name":"حاسبة الرياضيات الذكية","short_name":"حاسبة الرياضيات","start_url":".","display":"standalone","background_color":"%23020617","theme_color":"%234f46e5","description":"تطبيق شامل للحساب العلمي والهندسة والإحصاء مع الذكاء الاصطناعي","icons":[{"src":"data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" rx=\"22\" fill=\"%234f46e5\"/><text x=\"50%\" y=\"68%\" font-size=\"55\" font-weight=\"900\" fill=\"white\" text-anchor=\"middle\" font-family=\"sans-serif\">∑</text></svg>","sizes":"512x512","type":"image/svg+xml"}]}' />
+  <link rel="manifest" href='data:application/manifest+json,{"id":"/","name":"SMART-CALCULATOR","short_name":"SMART-CALCULATOR","start_url":".","display":"standalone","background_color":"%23020617","theme_color":"%234f46e5","description":"تطبيق شامل للحساب العلمي والهندسة والإحصاء مع الذكاء الاصطناعي","icons":[{"src":"data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" rx=\"22\" fill=\"%234f46e5\"/><text x=\"50%\" y=\"68%\" font-size=\"55\" font-weight=\"900\" fill=\"white\" text-anchor=\"middle\" font-family=\"sans-serif\">∑</text></svg>","sizes":"512x512","type":"image/svg+xml"}]}' />
 
   <!-- الخطوط العربية والرياضية -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,7 +66,7 @@
           </div>
           <div class="min-w-0">
             <h1 id="brand-title" class="text-xs sm:text-base font-black tracking-tight whitespace-nowrap truncate text-white">
-              حاسبة الرياضيات
+              SMART-CALCULATOR
             </h1>
           </div>
         </div>
@@ -570,7 +570,7 @@
       html.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
       html.setAttribute('lang', currentLang);
       document.getElementById('lang-text').innerText = currentLang === 'ar' ? 'EN' : 'عربي';
-      document.getElementById('brand-title').innerText = currentLang === 'ar' ? 'حاسبة الرياضيات' : 'Smart Math AI';
+      document.getElementById('brand-title').innerText = currentLang === 'ar' ? 'SMART-CALCULATOR' : 'SMART-CALCULATOR';
 
       document.querySelectorAll('.tab-text').forEach(el => {
         el.innerText = el.getAttribute(`data-${currentLang}`) || el.innerText;
