@@ -10,6 +10,16 @@
   <meta name="apple-mobile-web-app-title" content="SMART-CALCULATOR" />
   <title>SMART-CALCULATOR</title>
 
+  <!-- سياسة الأمان وحظر الإعلانات الخارجية والوهمية (CSP) -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com;
+    script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com *.profitableratecpmnetwork.com;
+    connect-src 'self' *.profitableratecpmnetwork.com;
+    img-src 'self' data: https:;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net;
+    font-src 'self' https://fonts.gstatic.com data:;
+  ">
+
   <!-- أيقونة الويب المضمنة PWA Icon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50%' y='68%' font-size='55' font-weight='900' fill='white' text-anchor='middle' font-family='sans-serif'>∑</text></svg>" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50%' y='68%' font-size='55' font-weight='900' fill='white' text-anchor='middle' font-family='sans-serif'>∑</text></svg>" />
@@ -49,7 +59,53 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 
-  <!-- إعلان Adsterra الأساسي المعتمد بدون سكربتات خبيثة أو توجيه وهمي -->
+  <!-- حماية متقدمة ضد النوافذ الوهمية واختطاف الروابط -->
+  <script>
+    (function() {
+      // منع إعادة التوجيه الوهمي أو فتح نوافذ خارجية غريبة
+      const originalOpen = window.open;
+      window.open = function(url, target, features) {
+        if (url && typeof url === 'string') {
+          // السماح فقط لروابط Adsterra الخاصة بك ومنع الباقي
+          if (url.includes('profitableratecpmnetwork.com') || url.startsWith('/') || url.startsWith('#')) {
+            return originalOpen.call(window, url, target, features);
+          }
+        }
+        console.warn('تم حظر محاولة فتح رابط خارجي مشبوه:', url);
+        return null;
+      };
+
+      // مراقبة وحظر أي عناصر إعلانية وهمية قد تحاول الحقن
+      window.addEventListener('DOMContentLoaded', () => {
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+              if (node.nodeType === 1) { // عنصر HTML
+                const src = node.src || node.getAttribute('href') || '';
+                const text = node.innerText || '';
+                // رصد الكلمات المفتاحية للإعلانات الوهمية والمهكرة
+                if (
+                  text.includes('ربحت') || 
+                  text.includes('رقم تلفون') || 
+                  text.includes('جائزة') || 
+                  (src && !src.includes('profitableratecpmnetwork.com') && !src.includes('jsdelivr') && !src.includes('unpkg') && !src.includes('googleapis') && node.tagName === 'SCRIPT')
+                ) {
+                  // إذا لم يكن السكربت خاصتك أو محتوى موثوق، قم بإزالته فوراً
+                  if (node.tagName === 'SCRIPT' && !src.includes('profitableratecpmnetwork.com')) {
+                    node.remove();
+                    console.warn('تم منع سكربت خارجي غير مصرح به:', src);
+                  }
+                }
+              }
+            });
+          });
+        });
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+      });
+    })();
+  </script>
+
+  <!-- إعلان Adsterra المعتمد حصرياً -->
   <script type="text/javascript" async src="//pl31292627.profitableratecpmnetwork.com/5a/39/bd/5a39bdbd120317432fbf9779d4481ae4.js"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
@@ -769,7 +825,7 @@
       const q = query.toLowerCase();
 
       if (q.includes('x^2') || q.includes('x²') || q.includes('تربيعية')) {
-        return `📐 حل وشرح المعادلة التربيعية بالتفصيل:\n\n1. الصيغة العامة: ax² + bx + c = 0\n2. حساب المميز: Δ = b² - 4ac\n   • إذا كان Δ > 0: يوجد جذران حقيقيان مختلفان.\n   • إذا كان Δ = 0: يوجد جذر حقيقي وحيد مكرر.\n   • إذا كان Δ < 0: يوجد حلان مركبان (تخيليان).\n\n💡 يمكنك الانتقال لتبويب "حل المعادلات" في الأعلى لحساب الحلول بدقة متناهية.`;
+        return `📐 حل وشرح المعادلة التربيعية بالتفصيل:\n\n1. الصيغة العامة: ax² + bx + c = 0\n2. حساب المميز: Δ = b² - 4ac\n   • إذا كان Δ > 0: يوجد جذران حقيقيان مختلفان.\n   • إذا كان Δ = 0: يوجد جذر حقيقي وحيد مكرر.\n   • إذا كان Δ < 0: يوجد حلان مركبان (تخيليان).\n\n💡 يمكنك الانتقال لتبويب "حل المعادلات"ใน الأعلى لحساب الحلول بدقة متناهية.`;
       }
 
       if (q.includes('sin') || q.includes('cos') || q.includes('tan') || q.includes('مثلث')) {
@@ -1155,7 +1211,7 @@
       let blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
       let a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'history.txt';
+      a.download = 'math-history.txt';
       a.click();
     }
 
@@ -1190,4 +1246,3 @@
   </script>
 </body>
 </html>
-
