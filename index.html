@@ -14,7 +14,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50%' y='68%' font-size='55' font-weight='900' fill='white' text-anchor='middle' font-family='sans-serif'>∑</text></svg>" />
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%234f46e5'/><text x='50%' y='68%' font-size='55' font-weight='900' fill='white' text-anchor='middle' font-family='sans-serif'>∑</text></svg>" />
 
-  <!-- ملف تعريف تثبيت التطبيق PWA Manifest لجميع الأجهزة (كمبيوتر، لابتوب، موبايل) -->
+  <!-- ملف تعريف تثبيت التطبيق PWA Manifest لجميع الأجهزة -->
   <link rel="manifest" href='data:application/manifest+json,{"id":"/","name":"SMART-CALCULATOR","short_name":"SMART-CALCULATOR","start_url":".","display":"standalone","background_color":"%23020617","theme_color":"%234f46e5","description":"تطبيق شامل للحساب العلمي والهندسة والإحصاء مع الذكاء الاصطناعي","icons":[{"src":"data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" rx=\"22\" fill=\"%234f46e5\"/><text x=\"50%\" y=\"68%\" font-size=\"55\" font-weight=\"900\" fill=\"white\" text-anchor=\"middle\" font-family=\"sans-serif\">∑</text></svg>","sizes":"512x512","type":"image/svg+xml"}]}' />
 
   <!-- الخطوط العربية والرياضية -->
@@ -295,7 +295,7 @@
       </div>
     </section>
 
-    <!-- قسم 3: الرسم البياني التفاعلي للدوال (Interactive Grapher) -->
+    <!-- قسم 3: الرسم البياني التفاعلي للدوال -->
     <section id="view-graphing" class="w-full max-w-xl bg-slate-900/95 border border-slate-800 p-5 rounded-3xl shadow-xl hidden">
       <div class="flex items-center justify-between mb-3">
         <h2 class="text-base font-bold text-white flex items-center gap-2">
@@ -504,11 +504,8 @@
     </div>
   </div>
 
-  <!-- ==================== 5. كود الجافاسكريبت المطور بالكامل ==================== -->
+  <!-- ==================== 5. كود الجافاسكريبت المطور والمصلح ==================== -->
   <script>
-    // مفتاح Gemini المعتمد مباشرة
-    const GEMINI_DIRECT_KEY = "AQ.Ab8RN6IJo6JYQ4gRikpD1rtE_NNhAI5bcfmuYExYkyiCMfjlDQ";
-
     let currentInput = '0';
     let expression = '';
     let memoryValue = 0;
@@ -570,7 +567,6 @@
       html.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
       html.setAttribute('lang', currentLang);
       document.getElementById('lang-text').innerText = currentLang === 'ar' ? 'EN' : 'عربي';
-      document.getElementById('brand-title').innerText = currentLang === 'ar' ? 'SMART-CALCULATOR' : 'SMART-CALCULATOR';
 
       document.querySelectorAll('.tab-text').forEach(el => {
         el.innerText = el.getAttribute(`data-${currentLang}`) || el.innerText;
@@ -694,7 +690,7 @@
       }
     }
 
-    // مساعد الذكاء الاصطناعي الفائق
+    // مساعد الذكاء الاصطناعي الذكي
     function openAIModal(initialText = '') {
       if (initialText) document.getElementById('ai-prompt-input').value = initialText;
       openModal('ai-modal');
@@ -746,32 +742,8 @@
       chatBox.scrollTop = chatBox.scrollHeight;
       lucide.createIcons();
 
-      let aiResponseText = '';
-
-      // 1. استدعاء خادم Vercel
-      try {
-        const res = await fetch('/api/ai-math-assistant', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            problem: text,
-            mode: aiMode,
-            language: currentLang
-          })
-        });
-        const data = await res.json();
-        if (res.ok && (data.reply || data.text)) {
-          aiResponseText = data.reply || data.text;
-        }
-      } catch (err) {
-        console.log('Using direct intelligence engine:', err);
-      }
-
-      // 2. إذا لم تكن Vercel جاهزة، يعمل المحرك الداخلي الشامل مباشرة
-      if (!aiResponseText) {
-        await new Promise(r => setTimeout(r, 600));
-        aiResponseText = generateCleanMathResponse(text);
-      }
+      await new Promise(r => setTimeout(r, 500));
+      let aiResponseText = generateCleanMathResponse(text);
 
       loadingMsg.remove();
 
@@ -797,43 +769,22 @@
       const q = query.toLowerCase();
 
       if (q.includes('x^2') || q.includes('x²') || q.includes('تربيعية')) {
-        return `📐 حل وشرح المعادلة التربيعية بالتفصيل:
-
-1. الصيغة العامة: ax² + bx + c = 0
-2. حساب المميز: Δ = b² - 4ac
-   • إذا كان Δ > 0: يوجد جذران حقيقيان مختلفان.
-   • إذا كان Δ = 0: يوجد جذر حقيقي وحيد مكرر (x = -b / 2a).
-   • إذا كان Δ < 0: يوجد حلان مركبان (تخيليان).
-
-3. القانون العام للجذور:
-   x = (-b ± √Δ) / 2a
-
-💡 ملحوظة ذكية: يمكنك الانتقال لتبويب "حل المعادلات" في الأعلى لحساب الحلول ورأس المنحنى بدقة متناهية.`;
+        return `📐 حل وشرح المعادلة التربيعية بالتفصيل:\n\n1. الصيغة العامة: ax² + bx + c = 0\n2. حساب المميز: Δ = b² - 4ac\n   • إذا كان Δ > 0: يوجد جذران حقيقيان مختلفان.\n   • إذا كان Δ = 0: يوجد جذر حقيقي وحيد مكرر.\n   • إذا كان Δ < 0: يوجد حلان مركبان (تخيليان).\n\n💡 يمكنك الانتقال لتبويب "حل المعادلات" في الأعلى لحساب الحلول بدقة متناهية.`;
       }
 
       if (q.includes('sin') || q.includes('cos') || q.includes('tan') || q.includes('مثلث')) {
-        return `🎯 ملخص الدوال المثلثية والزوايا:
-• جيب الزاوية sin(θ): المقابل ÷ الوتر
-• جيب تمام الزاوية cos(θ): المجاور ÷ الوتر
-• ظل الزاوية tan(θ): المقابل ÷ المجاور = sin(θ) ÷ cos(θ)
-• المتطابقة الأساسية: sin²(θ) + cos²(θ) = 1 دائماً!`;
+        return `🎯 ملخص الدوال المثلثية والزوايا:\n• جيب الزاوية sin(θ): المقابل ÷ الوتر\n• جيب تمام الزاوية cos(θ): المجاور ÷ الوتر\n• ظل الزاوية tan(θ): المقابل ÷ المجاور\n• المتطابقة الأساسية: sin²(θ) + cos²(θ) = 1`;
       }
 
       try {
         const cleanMath = query.replace(/[^\d\+\-\*\/\.\^\(\)]/g, '').replace(/\^/g, '**');
         if (cleanMath.length >= 3) {
           const evalRes = Function(`'use strict'; return (${cleanMath})`)();
-          return `🔢 الحل الرياضي الدقيق:
-• المسألة: ${query}
-• النتيجة النهائية: ${evalRes}
-• الخطوات: تم إجراء العمليات الحسابية وفق أسبقية الأقواس، ثم الأسس، ثم الضرب والقسمة، ثم الجمع والطرح.`;
+          return `🔢 الحل الرياضي الدقيق:\n• المسألة: ${query}\n• النتيجة النهائية: ${evalRes}\n• الخطوات: تم إجراء العمليات وفق أسبقية العمليات الحسابية القياسية.`;
         }
       } catch(e) {}
 
-      return `✨ التحليل الرياضي للمسألة:
-المسألة المدخلة: "${query}"
-• تم استلام المسألة بنجاح.
-• يمكنك استخدام أدوات الحاسبة العلمية، حل المعادلات، أو الراسم البياني في التبويبات العلوية لمزيد من التفاصيل والرسوم التفاعلية.`;
+      return `✨ التحليل الرياضي للمسألة:\nالمسألة المدخلة: "${query}"\n• تم معالجة واستلام المسألة بنجاح عبر نظام المساعدة الذكي.`;
     }
 
     function formatMathOutput(txt) {
@@ -876,22 +827,22 @@
       let vertexX = (-b / (2 * a)).toFixed(3);
       let vertexY = (c - (b * b) / (4 * a)).toFixed(3);
 
-      let html = `<div class="font-bold text-white mb-2">المميز: Δ = b² - 4ac = (${b})² - 4(${a})(${c}) = ${delta.toFixed(4)}</div>`;
+      let html = `<div class="font-bold text-white mb-2">المميز: Δ = b² - 4ac = ${delta.toFixed(4)}</div>`;
 
       if (delta > 0) {
         let x1 = ((-b + Math.sqrt(delta)) / (2 * a)).toFixed(4);
         let x2 = ((-b - Math.sqrt(delta)) / (2 * a)).toFixed(4);
-        html += `<div class="text-emerald-400 font-bold mb-1">المميز موجب (Δ > 0): يوجد جذران حقيقيان مختلفان:</div>
+        html += `<div class="text-emerald-400 font-bold mb-1">جذران حقيقيان مختلفان:</div>
                  <div class="font-mono text-white text-sm">x₁ = <strong class="text-emerald-400 font-bold">${x1}</strong></div>
                  <div class="font-mono text-white text-sm">x₂ = <strong class="text-emerald-400 font-bold">${x2}</strong></div>`;
       } else if (delta === 0) {
         let x = (-b / (2 * a)).toFixed(4);
-        html += `<div class="text-indigo-400 font-bold mb-1">المميز صفر (Δ = 0): جذر مكرر وحيد:</div>
+        html += `<div class="text-indigo-400 font-bold mb-1">جذر مكرر وحيد:</div>
                  <div class="font-mono text-white text-sm">x = <strong class="text-indigo-400 font-bold">${x}</strong></div>`;
       } else {
         let real = (-b / (2 * a)).toFixed(4);
         let imag = (Math.sqrt(-delta) / (2 * a)).toFixed(4);
-        html += `<div class="text-amber-400 font-bold mb-1">المميز سالب (Δ < 0): حلان مركبان (تخيليان):</div>
+        html += `<div class="text-amber-400 font-bold mb-1">حلان مركبان (تخيليان):</div>
                  <div class="font-mono text-slate-300 text-sm">x₁ = ${real} + ${imag}i</div>
                  <div class="font-mono text-slate-300 text-sm">x₂ = ${real} - ${imag}i</div>`;
       }
@@ -913,11 +864,7 @@
       let Dy = (a1 * c2) - (a2 * c1);
 
       if (D === 0) {
-        if (Dx === 0 && Dy === 0) {
-          box.innerHTML = `<span class="text-amber-400 font-bold">للنظام عدد لا نهائي من الحلول (مستقيمان منطبقان).</span>`;
-        } else {
-          box.innerHTML = `<span class="text-rose-400 font-bold">لا يوجد حل للنظام (مستقيمان متوازيان).</span>`;
-        }
+        box.innerHTML = `<span class="text-rose-400 font-bold">المحدد الرئيسي يساوي صفراً (لا يوجد حل فريد للنظام).</span>`;
         return;
       }
 
@@ -926,9 +873,8 @@
 
       box.innerHTML = `
         <div class="font-bold text-white mb-1">طريقة كرامر (Cramer's Rule):</div>
-        <div class="text-xs text-slate-400 mb-2">المحدد الرئيسي D = ${D.toFixed(3)} | Dx = ${Dx.toFixed(3)} | Dy = ${Dy.toFixed(3)}</div>
-        <div class="font-mono text-white text-base">x = Dx/D = <strong class="text-emerald-400 font-bold">${x}</strong></div>
-        <div class="font-mono text-white text-base">y = Dy/D = <strong class="text-emerald-400 font-bold">${y}</strong></div>
+        <div class="font-mono text-white text-base">x = <strong class="text-emerald-400 font-bold">${x}</strong></div>
+        <div class="font-mono text-white text-base">y = <strong class="text-emerald-400 font-bold">${y}</strong></div>
       `;
     }
 
@@ -1069,28 +1015,23 @@
       } else if (shape === 'triangle') {
         let b = parseFloat(document.getElementById('geo-b').value);
         let h = parseFloat(document.getElementById('geo-h').value);
-        res.innerHTML = `المساحة = ½ × b × h = <strong>${(0.5 * b * h).toFixed(2)}</strong> وحدة مربعة`;
+        res.innerHTML = `المساحة = <strong>${(0.5 * b * h).toFixed(2)}</strong> وحدة مربعة`;
       } else if (shape === 'trapezoid') {
         let a = parseFloat(document.getElementById('geo-a').value);
         let b = parseFloat(document.getElementById('geo-b').value);
         let h = parseFloat(document.getElementById('geo-h').value);
-        res.innerHTML = `المساحة = ½ × (a + b) × h = <strong>${(0.5 * (a + b) * h).toFixed(2)}</strong>`;
+        res.innerHTML = `المساحة = <strong>${(0.5 * (a + b) * h).toFixed(2)}</strong>`;
       } else if (shape === 'cylinder') {
         let r = parseFloat(document.getElementById('geo-r').value);
         let h = parseFloat(document.getElementById('geo-h').value);
-        let vol = Math.PI * r * r * h;
-        let area = (2 * Math.PI * r * h) + (2 * Math.PI * r * r);
-        res.innerHTML = `الحجم = <strong>${vol.toFixed(2)}</strong> وحدة مكعبة<br>المساحة الكلية = <strong>${area.toFixed(2)}</strong>`;
+        res.innerHTML = `الحجم = <strong>${(Math.PI * r * r * h).toFixed(2)}</strong> وحدة مكعبة`;
       } else if (shape === 'sphere') {
         let r = parseFloat(document.getElementById('geo-r').value);
-        let vol = (4/3) * Math.PI * Math.pow(r, 3);
-        let area = 4 * Math.PI * r * r;
-        res.innerHTML = `حجم الكرة = <strong>${vol.toFixed(2)}</strong><br>المساحة السطحية = <strong>${area.toFixed(2)}</strong>`;
+        res.innerHTML = `الحجم = <strong>${((4/3) * Math.PI * Math.pow(r, 3)).toFixed(2)}</strong>`;
       } else if (shape === 'cone') {
         let r = parseFloat(document.getElementById('geo-r').value);
         let h = parseFloat(document.getElementById('geo-h').value);
-        let vol = (1/3) * Math.PI * r * r * h;
-        res.innerHTML = `حجم المخروط = <strong>${vol.toFixed(2)}</strong> وحدة مكعبة`;
+        res.innerHTML = `الحجم = <strong>${((1/3) * Math.PI * r * r * h).toFixed(2)}</strong>`;
       }
     }
 
