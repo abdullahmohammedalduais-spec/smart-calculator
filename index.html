@@ -513,7 +513,10 @@
 
   <!-- ==================== 5. البرمجة والمنطق والمحرك التفاعلي ==================== -->
   <script>
-    const GEMINI_API_KEY = "AQ.Ab8RN6K4MN36DqjmnXZgCMDWRK-Tcx7_YSX6VIkzEJj3YGpBAA";
+    // جلب المفتاح تلقائياً من Vercel Environment Variables إذا تم تعيينه باسم NEXT_PUBLIC_GEMINI_API_KEY أو استخدام مفتاح بديل
+    const GEMINI_API_KEY = typeof process !== 'undefined' && process.env && process.env.GEMINI_API_KEY 
+      ? process.env.GEMINI_API_KEY 
+      : "AIzaSyD-Placeholder-Key-Replace-With-Valid-Key";
 
     let currentInput = '0';
     let expression = '';
@@ -750,7 +753,6 @@
       lucide.createIcons();
 
       try {
-        // استخدام رابط بديل موثوق أو تمرير الطلب بشكل صحيح لمنع الأخطاء
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -764,11 +766,11 @@
         const data = await response.json();
         loadingMsg.remove();
 
-        let aiReplyText = "عذراً، حدث خطأ في استجابة النموذج. تأكد من صحة مفتاح الربط أو الصلاحيات.";
+        let aiReplyText = "عذراً، تأكد من إعداد مفتاح Google Gemini API الصحيح في متغيرات Vercel (Environment Variables) باسم GEMINI_API_KEY.";
         if (data && data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
           aiReplyText = data.candidates[0].content.parts[0].text;
         } else if (data && data.error) {
-          aiReplyText = `خطأ من الخادم: ${data.error.message || 'غير معروف'}`;
+          aiReplyText = `خطأ من الخادم: ${data.error.message || 'مشكلة في بيانات الاعتماد أو المفتاح'}`;
         }
 
         const aiMsg = document.createElement('div');
@@ -786,7 +788,7 @@
         loadingMsg.remove();
         const errMsg = document.createElement('div');
         errMsg.className = 'p-3 rounded-2xl bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs';
-        errMsg.innerText = "تعذر الاتصال بخدمة الذكاء الاصطناعي مباشرة من المتصفح (قد بسبب سياسات CORS). يُفضل ربطه عبر خادم خلفي (Backend Proxy).";
+        errMsg.innerText = "تعذر الاتصال بخدمة الذكاء الاصطناعي بسبب خطأ في الشبكة أو مفتاح المصادقة.";
         chatBox.appendChild(errMsg);
       }
 
