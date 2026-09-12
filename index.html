@@ -51,10 +51,8 @@
 
   <!-- حماية أمنية صارمة لمنع حقن الإعلانات الوهمية وإعادة التوجيه -->
   <script>
-    // منع النوافذ المنبثقة الخارجية غير المصرح بها
     window.open = function() { console.warn("تم حظر محاولة فتح نافذة منبثقة خارجية."); return null; };
     
-    // مراقبة وحذف أي عناصر سكريبت أو إطارات وهمية تحاول الحقن
     window.addEventListener('error', function(e) {
       if (e.target && (e.target.tagName === 'SCRIPT' || e.target.tagName === 'IFRAME')) {
         const src = e.target.src || '';
@@ -433,8 +431,7 @@
           </div>
           <div>
             <h3 class="font-bold text-white text-sm sm:text-base flex items-center gap-1.5">
-              <span>المساعد الرياضي الذكي (Gemini API)</span>
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">متصل</span>
+              <span>المساعد الرياضي الذكي</span>
             </h3>
             <p class="text-[11px] text-slate-400">حلول رياضية دقيقة وشرح مبسط خطوة بخطوة</p>
           </div>
@@ -516,7 +513,8 @@
 
   <!-- ==================== 5. البرمجة والمنطق والمحرك التفاعلي ==================== -->
   <script>
-    const GEMINI_API_KEY = "AQ.Ab8RN6K4MN36DqjmnXZgCMDWRK-Tcx7_YSX6VIkzEJj3YGpBAA";
+    // ربط مفتاح جيميناي مع دعم متغيرات بيئة Vercel
+    const GEMINI_API_KEY = (typeof process !== 'undefined' && process.env && process.env.GEMINI_API_KEY) || "AQ.Ab8RN6K4MN36DqjmnXZgCMDWRK-Tcx7_YSX6VIkzEJj3YGpBAA";
 
     let currentInput = '0';
     let expression = '';
