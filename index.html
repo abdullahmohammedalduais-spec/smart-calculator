@@ -1,39 +1,4 @@
-/**
- * ============================================================================
- * خادم Node.js الخلفي (Backend Server) وتثبيت الحزم التلقائي
- * ============================================================================
- */
-const fs = require('fs');
-const { execSync } = require('child_process');
-
-// خدمة تثبيت الحزم المطلوبة تلقائياً إذا لم تكن موجودة
-const requiredPackages = ['express'];
-
-requiredPackages.forEach(pkg => {
-  try {
-    require.resolve(pkg);
-  } catch (e) {
-    console.log(`[تثبيت الحزم] الحزمة "${pkg}" غير مثبتة. جاري التثبيت تلقائياً...`);
-    try {
-      execSync(`npm install ${pkg}`, { stdio: 'inherit' });
-      console.log(`[تثبيت الحزم] تم تثبيت الحزمة "${pkg}" بنجاح.`);
-    } catch (err) {
-      console.error(`[خطأ] فشل تثبيت الحزمة ${pkg}. يرجى تشغيل الأمر يدويًا: npm install express`);
-      process.exit(1);
-    }
-  }
-});
-
-const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// إعداد خادم الملفات الثابتة أو إرسال الصفحة المباشرة
-app.use(express.json());
-
-// مسار الخادم الرئيسي الذي يعرض واجهة الحاسبة الذكية
-app.get('/', (req, res) => {
-  res.send(`<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl" class="dark">
 <head>
   <meta charset="UTF-8" />
@@ -548,7 +513,10 @@ app.get('/', (req, res) => {
 
   <!-- ==================== 5. البرمجة والمنطق والمحرك التفاعلي ==================== -->
   <script>
-    const GEMINI_API_KEY = "AIzaSyD-Placeholder-Key-Replace-With-Valid-Key";
+    // جلب المفتاح تلقائياً من Vercel Environment Variables إذا تم تعيينه باسم NEXT_PUBLIC_GEMINI_API_KEY أو استخدام مفتاح بديل
+    const GEMINI_API_KEY = typeof process !== 'undefined' && process.env && process.env.GEMINI_API_KEY 
+      ? process.env.GEMINI_API_KEY 
+      : "AIzaSyD-Placeholder-Key-Replace-With-Valid-Key";
 
     let currentInput = '0';
     let expression = '';
@@ -590,7 +558,7 @@ app.get('/', (req, res) => {
         brandTitle.classList.remove('text-white');
         brandTitle.classList.add('text-slate-900');
         themeBtn.className = "h-8 sm:h-9 px-2 rounded-lg sm:rounded-xl border transition-all cursor-pointer flex items-center justify-center gap-1 bg-amber-100 hover:bg-amber-200 border-amber-300 text-amber-900 shadow-sm flex-shrink-0";
-        themeBtn.innerHTML = \`<i data-lucide="moon" class="w-4 h-4 text-indigo-700"></i><span class="hidden lg:inline text-xs font-bold text-slate-800">\${translations[currentLang].darkMode}</span>\`;
+        themeBtn.innerHTML = `<i data-lucide="moon" class="w-4 h-4 text-indigo-700"></i><span class="hidden lg:inline text-xs font-bold text-slate-800">${translations[currentLang].darkMode}</span>`;
       } else {
         currentTheme = 'dark';
         html.classList.add('dark');
@@ -601,7 +569,7 @@ app.get('/', (req, res) => {
         brandTitle.classList.remove('text-slate-900');
         brandTitle.classList.add('text-white');
         themeBtn.className = "h-8 sm:h-9 px-2 rounded-lg sm:rounded-xl border transition-all cursor-pointer flex items-center justify-center gap-1 bg-amber-500/20 hover:bg-amber-500/30 border-amber-400/60 text-amber-300 ring-1 ring-amber-400/40 shadow-sm flex-shrink-0";
-        themeBtn.innerHTML = \`<i data-lucide="sun" class="w-4 h-4 text-amber-400"></i><span class="hidden lg:inline text-xs font-bold text-amber-300">\${translations[currentLang].lightMode}</span>\`;
+        themeBtn.innerHTML = `<i data-lucide="sun" class="w-4 h-4 text-amber-400"></i><span class="hidden lg:inline text-xs font-bold text-amber-300">${translations[currentLang].lightMode}</span>`;
       }
       lucide.createIcons();
     }
@@ -614,14 +582,14 @@ app.get('/', (req, res) => {
       document.getElementById('lang-text').innerText = currentLang === 'ar' ? 'EN' : 'عربي';
 
       document.querySelectorAll('.tab-text').forEach(el => {
-        el.innerText = el.getAttribute(\`data-\${currentLang}\`);
+        el.innerText = el.getAttribute(`data-${currentLang}`);
       });
     }
 
     function switchTab(tabKey) {
       ['scientific', 'equations', 'graphing', 'geometry', 'stats', 'converter'].forEach(tab => {
-        const view = document.getElementById(\`view-\${tab}\`);
-        const btn = document.getElementById(\`tab-\${tab}\`);
+        const view = document.getElementById(`view-${tab}`);
+        const btn = document.getElementById(`tab-${tab}`);
         if (tab === tabKey) {
           view.classList.remove('hidden');
           btn.className = "tab-btn px-3 py-1.5 rounded-lg font-bold transition flex items-center gap-1 bg-indigo-600 text-white whitespace-nowrap shadow-sm";
@@ -648,7 +616,7 @@ app.get('/', (req, res) => {
     }
 
     function calcOp(op) {
-      expression = \`\${currentInput} \${op} \`;
+      expression = `${currentInput} ${op} `;
       currentInput = '0';
       updateCalcScreen();
     }
@@ -699,9 +667,9 @@ app.get('/', (req, res) => {
           res = (n => { if (n < 0) return NaN; let f = 1; for(let i=2; i<=Math.min(n, 100); i++) f*=i; return f; })(Math.round(val));
           break;
       }
-      addHistory(\`\${fn}(\${val})\`, res);
+      addHistory(`${fn}(${val})`, res);
       currentInput = Number(res.toFixed(8)).toString();
-      expression = \`\${fn}(\${val}) =\`;
+      expression = `${fn}(${val}) =`;
       updateCalcScreen();
     }
 
@@ -709,8 +677,8 @@ app.get('/', (req, res) => {
       if (!expression) return;
       try {
         let fullExpr = expression + currentInput;
-        let safeExpr = fullExpr.replace(/×/g, '*').replace(/÷/g, '/').replace(/\\^/g, '**');
-        let result = Number(Function(\`'use strict'; return (\${safeExpr})\`)().toFixed(8));
+        let safeExpr = fullExpr.replace(/×/g, '*').replace(/÷/g, '/').replace(/\^/g, '**');
+        let result = Number(Function(`'use strict'; return (${safeExpr})`)().toFixed(8));
         addHistory(fullExpr, result);
         expression = fullExpr + ' =';
         currentInput = result.toString();
@@ -744,7 +712,7 @@ app.get('/', (req, res) => {
         btn.classList.remove('bg-violet-600', 'text-white', 'font-bold');
         btn.classList.add('bg-slate-800', 'text-slate-300', 'font-medium');
       });
-      const activeBtn = document.getElementById(\`aimode-\${mode}\`);
+      const activeBtn = document.getElementById(`aimode-${mode}`);
       if (activeBtn) {
         activeBtn.classList.add('bg-violet-600', 'text-white', 'font-bold');
         activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
@@ -752,8 +720,8 @@ app.get('/', (req, res) => {
     }
 
     function askAIAboutCurrent() {
-      const expr = expression ? \`\${expression} \${currentInput}\` : currentInput;
-      openAIModal(currentLang === 'ar' ? \`حل واشرح خطوات هذه المسألة: \${expr}\` : \`Solve and explain step by step: \${expr}\`);
+      const expr = expression ? `${expression} ${currentInput}` : currentInput;
+      openAIModal(currentLang === 'ar' ? `حل واشرح خطوات هذه المسألة: ${expr}` : `Solve and explain step by step: ${expr}`);
       handleAISend();
     }
 
@@ -761,7 +729,7 @@ app.get('/', (req, res) => {
       const a = document.getElementById('eq-a').value;
       const b = document.getElementById('eq-b').value;
       const c = document.getElementById('eq-c').value;
-      openAIModal(currentLang === 'ar' ? \`اشرح خطوات حل المعادلة التربيعية: \${a}x² + \${b}x + \${c} = 0\` : \`Explain steps for quadratic equation: \${a}x² + \${b}x + \${c} = 0\`);
+      openAIModal(currentLang === 'ar' ? `اشرح خطوات حل المعادلة التربيعية: ${a}x² + ${b}x + ${c} = 0` : `Explain steps for quadratic equation: ${a}x² + ${b}x + ${c} = 0`);
       handleAISend();
     }
 
@@ -773,24 +741,24 @@ app.get('/', (req, res) => {
       const chatBox = document.getElementById('ai-chat-output');
       const userMsg = document.createElement('div');
       userMsg.className = 'p-3 rounded-2xl bg-indigo-600/30 border border-indigo-500/30 text-white text-xs sm:text-sm text-right';
-      userMsg.innerHTML = \`<span class="font-bold block text-indigo-300 text-[11px] mb-1">أنت:</span>\${text}\`;
+      userMsg.innerHTML = `<span class="font-bold block text-indigo-300 text-[11px] mb-1">أنت:</span>${text}`;
       chatBox.appendChild(userMsg);
       input.value = '';
 
       const loadingMsg = document.createElement('div');
       loadingMsg.className = 'p-3 rounded-2xl bg-slate-950 border border-violet-500/30 text-violet-300 text-xs flex items-center gap-2';
-      loadingMsg.innerHTML = \`<i data-lucide="sparkles" class="w-4 h-4 animate-spin"></i><span>جارٍ المعالجة بواسطة الذكاء الاصطناعي...</span>\`;
+      loadingMsg.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4 animate-spin"></i><span>جارٍ المعالجة بواسطة الذكاء الاصطناعي...</span>`;
       chatBox.appendChild(loadingMsg);
       chatBox.scrollTop = chatBox.scrollHeight;
       lucide.createIcons();
 
       try {
-        const response = await fetch(\`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=\${GEMINI_API_KEY}\`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             contents: [{
-              parts: [{ text: \`أنت مساعد رياضي ذكي وخبير. وضع الشرح الحالي هو: \${aiMode}. أجب بدقة واختصار واحترافية على السؤال التالي باللغة العربية: \${text}\` }]
+              parts: [{ text: `أنت مساعد رياضي ذكي وخبير. وضع الشرح الحالي هو: ${aiMode}. أجب بدقة واختصار واحترافية على السؤال التالي باللغة العربية: ${text}` }]
             }]
           })
         });
@@ -798,21 +766,23 @@ app.get('/', (req, res) => {
         const data = await response.json();
         loadingMsg.remove();
 
-        let aiReplyText = "عذراً، تأكد من إعداد مفتاح Google Gemini API الصحيح.";
+        let aiReplyText = "عذراً، تأكد من إعداد مفتاح Google Gemini API الصحيح في متغيرات Vercel (Environment Variables) باسم GEMINI_API_KEY.";
         if (data && data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
           aiReplyText = data.candidates[0].content.parts[0].text;
+        } else if (data && data.error) {
+          aiReplyText = `خطأ من الخادم: ${data.error.message || 'مشكلة في بيانات الاعتماد أو المفتاح'}`;
         }
 
         const aiMsg = document.createElement('div');
         aiMsg.className = 'p-4 rounded-2xl bg-slate-950 border border-violet-500/40 text-slate-200 text-xs sm:text-sm space-y-2';
-        aiMsg.innerHTML = \`
+        aiMsg.innerHTML = `
           <div class="flex items-center justify-between border-b border-slate-800 pb-1.5 mb-2">
             <span class="font-bold text-violet-400 text-xs flex items-center gap-1">
               <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> المساعد الرياضي الذكي
             </span>
           </div>
-          <div class="leading-relaxed whitespace-pre-line text-slate-200">\${aiReplyText}</div>
-        \`;
+          <div class="leading-relaxed whitespace-pre-line text-slate-200">${aiReplyText}</div>
+        `;
         chatBox.appendChild(aiMsg);
       } catch (error) {
         loadingMsg.remove();
@@ -847,20 +817,20 @@ app.get('/', (req, res) => {
       let box = document.getElementById('eq-result');
 
       let delta = (b * b) - (4 * a * c);
-      let html = \`<div class="font-bold text-white mb-2">Δ = b² - 4ac = \${delta.toFixed(4)}</div>\`;
+      let html = `<div class="font-bold text-white mb-2">Δ = b² - 4ac = ${delta.toFixed(4)}</div>`;
 
       if (delta > 0) {
         let x1 = ((-b + Math.sqrt(delta)) / (2 * a)).toFixed(4);
         let x2 = ((-b - Math.sqrt(delta)) / (2 * a)).toFixed(4);
-        html += \`<div class="text-emerald-400 font-bold mb-1">جذران حقيقيان:</div>
-                 <div class="font-mono text-white text-sm">x₁ = <strong class="text-emerald-400">\${x1}</strong></div>
-                 <div class="font-mono text-white text-sm">x₂ = <strong class="text-emerald-400">\${x2}</strong></div>\`;
+        html += `<div class="text-emerald-400 font-bold mb-1">جذران حقيقيان:</div>
+                 <div class="font-mono text-white text-sm">x₁ = <strong class="text-emerald-400">${x1}</strong></div>
+                 <div class="font-mono text-white text-sm">x₂ = <strong class="text-emerald-400">${x2}</strong></div>`;
       } else if (delta === 0) {
         let x = (-b / (2 * a)).toFixed(4);
-        html += \`<div class="text-indigo-400 font-bold mb-1">جذر حقيقي مكرر:</div>
-                 <div class="font-mono text-white text-sm">x = <strong class="text-indigo-400">\${x}</strong></div>\`;
+        html += `<div class="text-indigo-400 font-bold mb-1">جذر حقيقي مكرر:</div>
+                 <div class="font-mono text-white text-sm">x = <strong class="text-indigo-400">${x}</strong></div>`;
       } else {
-        html += \`<div class="text-amber-400 font-bold mb-1">جذور مركبة (تخيلية)</div>\`;
+        html += `<div class="text-amber-400 font-bold mb-1">جذور مركبة (تخيلية)</div>`;
       }
       box.innerHTML = html;
     }
@@ -879,18 +849,18 @@ app.get('/', (req, res) => {
       let Dy = (a1 * c2) - (a2 * c1);
 
       if (D === 0) {
-        box.innerHTML = \`<span class="text-amber-400 font-bold">لا يوجد حل فريد للنظام</span>\`;
+        box.innerHTML = `<span class="text-amber-400 font-bold">لا يوجد حل فريد للنظام</span>`;
         return;
       }
 
       let x = (Dx / D).toFixed(4);
       let y = (Dy / D).toFixed(4);
 
-      box.innerHTML = \`
+      box.innerHTML = `
         <div class="font-bold text-white mb-1">طريقة كرامر:</div>
-        <div class="font-mono text-white text-base">x = <strong class="text-emerald-400">\${x}</strong></div>
-        <div class="font-mono text-white text-base">y = <strong class="text-emerald-400">\${y}</strong></div>
-      \`;
+        <div class="font-mono text-white text-base">x = <strong class="text-emerald-400">${x}</strong></div>
+        <div class="font-mono text-white text-base">y = <strong class="text-emerald-400">${y}</strong></div>
+      `;
     }
 
     function initGraph() {
@@ -942,7 +912,7 @@ app.get('/', (req, res) => {
       ctx.moveTo(originX, 0); ctx.lineTo(originX, h);
       ctx.stroke();
 
-      let parsed = rawExpr.replace(/sin/g, 'Math.sin').replace(/cos/g, 'Math.cos').replace(/tan/g, 'Math.tan').replace(/\\^/g, '**');
+      let parsed = rawExpr.replace(/sin/g, 'Math.sin').replace(/cos/g, 'Math.cos').replace(/tan/g, 'Math.tan').replace(/\^/g, '**');
 
       ctx.strokeStyle = '#818cf8';
       ctx.lineWidth = 3;
@@ -952,7 +922,7 @@ app.get('/', (req, res) => {
       for (let px = 0; px < w; px += 2) {
         let mathX = (px - originX) / graphScale;
         try {
-          let mathY = Function('x', \`'use strict'; return (\${parsed});\`)(mathX);
+          let mathY = Function('x', `'use strict'; return (${parsed});`)(mathX);
           if (isNaN(mathY) || !isFinite(mathY)) { started = false; continue; }
           let py = originY - (mathY * graphScale);
           if (!started) { ctx.moveTo(px, py); started = true; }
@@ -966,12 +936,12 @@ app.get('/', (req, res) => {
       const shape = document.getElementById('geo-shape').value;
       const box = document.getElementById('geo-inputs');
       if (shape === 'circle') {
-        box.innerHTML = \`<div><label class="text-xs text-slate-400 block mb-1">نصف القطر (r)</label><input type="number" id="geo-r" value="5" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>\`;
+        box.innerHTML = `<div><label class="text-xs text-slate-400 block mb-1">نصف القطر (r)</label><input type="number" id="geo-r" value="5" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>`;
       } else {
-        box.innerHTML = \`<div class="grid grid-cols-2 gap-2">
+        box.innerHTML = `<div class="grid grid-cols-2 gap-2">
           <div><label class="text-xs text-slate-400 block mb-1">الطول (L)</label><input type="number" id="geo-l" value="8" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>
           <div><label class="text-xs text-slate-400 block mb-1">العرض (W)</label><input type="number" id="geo-w" value="4" class="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono" /></div>
-        </div>\`;
+        </div>`;
       }
     }
 
@@ -980,11 +950,11 @@ app.get('/', (req, res) => {
       const res = document.getElementById('geo-result');
       if (shape === 'circle') {
         let r = parseFloat(document.getElementById('geo-r').value);
-        res.innerHTML = \`المساحة = <strong>\${(Math.PI * r * r).toFixed(2)}</strong><br>المحيط = <strong>\${(2 * Math.PI * r).toFixed(2)}</strong>\`;
+        res.innerHTML = `المساحة = <strong>${(Math.PI * r * r).toFixed(2)}</strong><br>المحيط = <strong>${(2 * Math.PI * r).toFixed(2)}</strong>`;
       } else {
         let l = parseFloat(document.getElementById('geo-l').value);
         let w = parseFloat(document.getElementById('geo-w').value);
-        res.innerHTML = \`المساحة = <strong>\${(l * w).toFixed(2)}</strong><br>المحيط = <strong>\${(2 * (l + w)).toFixed(2)}</strong>\`;
+        res.innerHTML = `المساحة = <strong>${(l * w).toFixed(2)}</strong><br>المحيط = <strong>${(2 * (l + w)).toFixed(2)}</strong>`;
       }
     }
 
@@ -1027,15 +997,15 @@ app.get('/', (req, res) => {
       let variance = arr.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / (count > 1 ? count - 1 : 1);
       let stdDev = Math.sqrt(variance);
 
-      container.innerHTML = \`
-        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">العدد (N)</span><strong class="text-white font-mono text-sm">\${count}</strong></div>
-        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">المجموع (Σ)</span><strong class="text-white font-mono text-sm">\${sum.toFixed(2)}</strong></div>
-        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">المتوسط</span><strong class="text-indigo-400 font-mono text-sm">\${mean.toFixed(2)}</strong></div>
-        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">الوسيط</span><strong class="text-emerald-400 font-mono text-sm">\${median.toFixed(2)}</strong></div>
-        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">المنوال</span><strong class="text-amber-400 font-mono text-sm">\${modeStr}</strong></div>
-        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">المدى</span><strong class="text-white font-mono text-sm">\${range.toFixed(2)}</strong></div>
-        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 col-span-2 sm:col-span-3"><span class="text-slate-400 block">الانحراف المعياري (SD)</span><strong class="text-violet-400 font-mono text-sm">\${stdDev.toFixed(4)}</strong></div>
-      \`;
+      container.innerHTML = `
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">العدد (N)</span><strong class="text-white font-mono text-sm">${count}</strong></div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">المجموع (Σ)</span><strong class="text-white font-mono text-sm">${sum.toFixed(2)}</strong></div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">المتوسط</span><strong class="text-indigo-400 font-mono text-sm">${mean.toFixed(2)}</strong></div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">الوسيط</span><strong class="text-emerald-400 font-mono text-sm">${median.toFixed(2)}</strong></div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">المنوال</span><strong class="text-amber-400 font-mono text-sm">${modeStr}</strong></div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">المدى</span><strong class="text-white font-mono text-sm">${range.toFixed(2)}</strong></div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 col-span-2 sm:col-span-3"><span class="text-slate-400 block">الانحراف المعياري (SD)</span><strong class="text-violet-400 font-mono text-sm">${stdDev.toFixed(4)}</strong></div>
+      `;
     }
 
     const unitDefinitions = {
@@ -1052,8 +1022,8 @@ app.get('/', (req, res) => {
       const fromSel = document.getElementById('conv-from');
       const toSel = document.getElementById('conv-to');
       const keys = Object.keys(def);
-      fromSel.innerHTML = keys.map(k => \`<option value="\${k}">\${def[k]}</option>\`).join('');
-      toSel.innerHTML = keys.map(k => \`<option value="\${k}">\${def[k]}</option>\`).join('');
+      fromSel.innerHTML = keys.map(k => `<option value="${k}">${def[k]}</option>`).join('');
+      toSel.innerHTML = keys.map(k => `<option value="${k}">${def[k]}</option>`).join('');
       if (keys.length > 1) toSel.selectedIndex = 1;
       convertUnits();
     }
@@ -1068,7 +1038,7 @@ app.get('/', (req, res) => {
     }
 
     function convertUnits() {
-      const cat = document.getElementById('conv-cat'].value;
+      const cat = document.getElementById('conv-cat').value;
       const val = parseFloat(document.getElementById('conv-val').value) || 0;
       const from = document.getElementById('conv-from').value;
       const to = document.getElementById('conv-to').value;
@@ -1081,7 +1051,7 @@ app.get('/', (req, res) => {
         const rates = unitDefinitions[cat].rates;
         result = (val * rates[from]) / rates[to];
       }
-      document.getElementById('conv-result').innerText = \`\${Number(result.toFixed(4))} \${to}\`;
+      document.getElementById('conv-result').innerText = `${Number(result.toFixed(4))} ${to}`;
     }
 
     function addHistory(expr, result) {
@@ -1104,7 +1074,7 @@ app.get('/', (req, res) => {
 
     function exportHistoryText() {
       if (!history.length) return alert('السجل فارغ');
-      let txt = history.map(h => \`\${h.time}: \${h.expr} = \${h.result}\`).join('\\n');
+      let txt = history.map(h => `${h.time}: ${h.expr} = ${h.result}`).join('\n');
       let blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
       let a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -1115,7 +1085,7 @@ app.get('/', (req, res) => {
     function saveCurrentResult() {
       let val = currentInput;
       if (val === '0' || val === 'خطأ' || val === 'Error') return;
-      alert(\`تم حفظ النتيجة: (\${val})\`);
+      alert(`تم حفظ النتيجة: (${val})`);
     }
 
     function openModal(id) {
@@ -1130,22 +1100,16 @@ app.get('/', (req, res) => {
     function renderHistoryList() {
       const container = document.getElementById('history-list');
       if (!history.length) {
-        container.innerHTML = \`<div class="text-center text-slate-500 py-6 text-xs">لا توجد عمليات مسجلة.</div>\`;
+        container.innerHTML = `<div class="text-center text-slate-500 py-6 text-xs">لا توجد عمليات مسجلة.</div>`;
         return;
       }
-      container.innerHTML = history.map(item => \`
+      container.innerHTML = history.map(item => `
         <div class="p-2 rounded-xl bg-slate-950 border border-slate-800 text-left font-mono" dir="ltr">
-          <div class="text-[11px] text-slate-400">\${item.expr}</div>
-          <div class="text-sm font-bold text-indigo-400">= \${item.result}</div>
-        }
-      \`).join('');
+          <div class="text-[11px] text-slate-400">${item.expr}</div>
+          <div class="text-sm font-bold text-indigo-400">= ${item.result}</div>
+        </div>
+      `).join('');
     }
   </script>
 </body>
-</html>`);
-});
-
-// تشغيل الخادم
-app.listen(PORT, () => {
-  console.log(\`[الخادم يعمل] التطبيق متاح الآن على الرابط: http://localhost:\${PORT}\`);
-});
+</html>
