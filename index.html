@@ -49,8 +49,12 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 
-  <!-- حماية أمنية وتأمين التطبيق لمنع أي إعادة توجيه ضارة أو إعلانات وهمية خارجية -->
+  <!-- حماية أمنية صارمة لمنع حقن الإعلانات الوهمية وإعادة التوجيه -->
   <script>
+    // منع النوافذ المنبثقة الخارجية غير المصرح بها
+    window.open = function() { console.warn("تم حظر محاولة فتح نافذة منبثقة خارجية."); return null; };
+    
+    // مراقبة وحذف أي عناصر سكريبت أو إطارات وهمية تحاول الحقن
     window.addEventListener('error', function(e) {
       if (e.target && (e.target.tagName === 'SCRIPT' || e.target.tagName === 'IFRAME')) {
         const src = e.target.src || '';
@@ -239,7 +243,7 @@
         <button onclick="calcEquals()" class="py-3 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-600 hover:opacity-90 text-white font-black text-2xl shadow-lg shadow-indigo-600/40">=</button>
       </div>
 
-      <!-- إعلان Adsterra المحمي والآمن -->
+      <!-- إعلان Adsterra الأصلي والآمن (داخل الحاوية المخصصة فقط) -->
       <div id="adsterra-banner-container" class="w-full mt-2 pt-2 border-t border-slate-800/80 flex items-center justify-center overflow-hidden min-h-[50px] bg-slate-950/60 rounded-xl">
         <script type="text/javascript" src="//pl31292627.profitableratecpmnetwork.com/5a/39/bd/5a39bdbd120317432fbf9779d4481ae4.js"></script>
       </div>
@@ -512,7 +516,6 @@
 
   <!-- ==================== 5. البرمجة والمنطق والمحرك التفاعلي ==================== -->
   <script>
-    // إعداد مفتاح Gemini API المدمج
     const GEMINI_API_KEY = "AQ.Ab8RN6K4MN36DqjmnXZgCMDWRK-Tcx7_YSX6VIkzEJj3YGpBAA";
 
     let currentInput = '0';
