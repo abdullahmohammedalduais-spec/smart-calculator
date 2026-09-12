@@ -51,7 +51,6 @@
 
   <!-- حماية أمنية وتأمين التطبيق لمنع أي إعادة توجيه ضارة أو إعلانات وهمية خارجية -->
   <script>
-    // حماية النطاق ومنع التلاعب بالـ DOM أو الحقن الخارجي
     window.addEventListener('error', function(e) {
       if (e.target && (e.target.tagName === 'SCRIPT' || e.target.tagName === 'IFRAME')) {
         const src = e.target.src || '';
@@ -84,7 +83,7 @@
         <!-- أزرار الإجراءات الرئيسية -->
         <div class="flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
           
-          <!-- زر الإضاءة (نهاري / ليلي) -->
+          <!-- زر الإضاءة -->
           <button
             id="theme-btn"
             onclick="toggleTheme()"
@@ -162,7 +161,6 @@
     
     <!-- قسم 1: الحاسبة العلمية الشاملة -->
     <section id="view-scientific" class="w-full max-w-md bg-slate-900/95 border border-slate-800 p-4 sm:p-5 rounded-3xl shadow-2xl backdrop-blur-xl">
-      <!-- شاشة العرض -->
       <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-4 mb-3 text-left font-mono">
         <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
           <div class="flex items-center gap-2">
@@ -241,7 +239,7 @@
         <button onclick="calcEquals()" class="py-3 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-violet-600 hover:opacity-90 text-white font-black text-2xl shadow-lg shadow-indigo-600/40">=</button>
       </div>
 
-      <!-- خانة إعلان Adsterra الوحيد تحت الحاسبة بشكل صغير ومنظم -->
+      <!-- إعلان Adsterra المحمي والآمن -->
       <div id="adsterra-banner-container" class="w-full mt-2 pt-2 border-t border-slate-800/80 flex items-center justify-center overflow-hidden min-h-[50px] bg-slate-950/60 rounded-xl">
         <script type="text/javascript" src="//pl31292627.profitableratecpmnetwork.com/5a/39/bd/5a39bdbd120317432fbf9779d4481ae4.js"></script>
       </div>
@@ -265,7 +263,6 @@
         <button onclick="setEquationType('system')" id="eq-type-sys" class="flex-1 py-1.5 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:text-white">نظام معادلتين (2x2)</button>
       </div>
 
-      <!-- نموذج المعادلة التربيعية -->
       <div id="form-quadratic" class="space-y-3">
         <div class="grid grid-cols-3 gap-3 text-center font-mono">
           <div>
@@ -286,7 +283,6 @@
         </button>
       </div>
 
-      <!-- نموذج نظام معادلتين -->
       <div id="form-system" class="space-y-3 hidden">
         <div class="text-xs text-slate-400 mb-1">المعادلة الأولى: a₁x + b₁y = c₁</div>
         <div class="grid grid-cols-3 gap-2 font-mono">
@@ -310,7 +306,7 @@
       </div>
     </section>
 
-    <!-- قسم 3: الرسم البياني التفاعلي للدوال -->
+    <!-- قسم 3: الرسم البياني التفاعلي -->
     <section id="view-graphing" class="w-full max-w-xl bg-slate-900/95 border border-slate-800 p-5 rounded-3xl shadow-xl hidden">
       <div class="flex items-center justify-between mb-3">
         <h2 class="text-base font-bold text-white flex items-center gap-2">
@@ -367,7 +363,7 @@
       </div>
     </section>
 
-    <!-- قسم 5: التحليل الإحصائي الكامل -->
+    <!-- قسم 5: التحليل الإحصائي الشامل (محدث بالكامل مع جميع المؤشرات) -->
     <section id="view-stats" class="w-full max-w-lg bg-slate-900/95 border border-slate-800 p-5 rounded-3xl shadow-xl hidden">
       <h2 class="text-base font-bold text-white mb-3 flex items-center gap-2">
         <i data-lucide="bar-chart-2" class="w-5 h-5 text-indigo-400"></i>
@@ -378,7 +374,8 @@
       <button onclick="calculateStatistics()" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition mb-3">
         حساب المؤشرات الإحصائية
       </button>
-      <div id="stats-results" class="grid grid-cols-2 gap-2 text-xs"></div>
+      <!-- شبكة المؤشرات الإحصائية المحدثة لتشمل العدد، المجموع، المتوسط، الوسيط، المنوال، المدى، والانحراف المعياري -->
+      <div id="stats-results" class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs"></div>
     </section>
 
     <!-- قسم 6: محول الوحدات الشامل -->
@@ -426,8 +423,6 @@
   <!-- ==================== 3. نافذة مساعد الذكاء الاصطناعي ==================== -->
   <div id="ai-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 hidden">
     <div class="bg-slate-900 border border-violet-500/40 w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
-      
-      <!-- رأس النافذة -->
       <div class="flex items-center justify-between px-4 py-3 bg-slate-950/70 border-b border-slate-800">
         <div class="flex items-center gap-2">
           <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-violet-600 to-fuchsia-600 flex items-center justify-center shadow-md">
@@ -446,7 +441,6 @@
         </button>
       </div>
 
-      <!-- أنماط التحليل السريعة -->
       <div class="p-3 bg-slate-950/40 border-b border-slate-800/80">
         <span class="text-[11px] font-bold text-slate-400 block mb-1.5">أسلوب التحليل والشرح:</span>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs">
@@ -469,14 +463,12 @@
         </div>
       </div>
 
-      <!-- مساحة المحادثة والردود -->
       <div id="ai-chat-output" class="flex-1 overflow-y-auto p-4 space-y-3.5 text-sm min-h-[190px]">
         <div class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 text-slate-300 text-xs sm:text-sm leading-relaxed">
           أهلاً بك! أنا رفيقك الرياضي الذكي. اكتب أي مسألة رياضية أو معادلة، وسأقوم بحلها وتفصيل خطواتها لك فوراً.
         </div>
       </div>
 
-      <!-- حقل إدخال السؤال -->
       <div class="p-3 bg-slate-950/80 border-t border-slate-800">
         <div class="flex items-center gap-2">
           <input
@@ -935,6 +927,7 @@
       }
     }
 
+    // دالة الإحصاء المحدثة والشاملة (تحسب العدد، المجموع، المتوسط، الوسيط، المنوال، المدى، والانحراف المعياري)
     function calculateStatistics() {
       let raw = document.getElementById('stats-input').value;
       let arr = raw.split(/[, ]+/).map(Number).filter(n => !isNaN(n));
@@ -946,10 +939,47 @@
       let sum = arr.reduce((a, b) => a + b, 0);
       let mean = sum / count;
 
+      // حساب الوسيط (Median)
+      let median = 0;
+      let mid = Math.floor(count / 2);
+      if (count % 2 === 0) {
+        median = (arr[mid - 1] + arr[mid]) / 2;
+      } else {
+        median = arr[mid];
+      }
+
+      // حساب المنوال (Mode)
+      let freqMap = {};
+      let maxFreq = 0;
+      let modes = [];
+      arr.forEach(num => {
+        freqMap[num] = (freqMap[num] || 0) + 1;
+        if (freqMap[num] > maxFreq) {
+          maxFreq = freqMap[num];
+        }
+      });
+      for (let num in freqMap) {
+        if (freqMap[num] === maxFreq) {
+          modes.push(num);
+        }
+      }
+      let modeStr = maxFreq > 1 ? modes.join(', ') : 'لا يوجد';
+
+      // حساب المدى (Range)
+      let range = arr[count - 1] - arr[0];
+
+      // حساب الانحراف المعياري العيني (Sample Standard Deviation)
+      let variance = arr.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / (count > 1 ? count - 1 : 1);
+      let stdDev = Math.sqrt(variance);
+
       container.innerHTML = `
         <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">العدد (N)</span><strong class="text-white font-mono text-sm">${count}</strong></div>
         <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">المجموع (Σ)</span><strong class="text-white font-mono text-sm">${sum.toFixed(2)}</strong></div>
         <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">المتوسط</span><strong class="text-indigo-400 font-mono text-sm">${mean.toFixed(2)}</strong></div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">الوسيط</span><strong class="text-emerald-400 font-mono text-sm">${median.toFixed(2)}</strong></div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">المنوال</span><strong class="text-amber-400 font-mono text-sm">${modeStr}</strong></div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800"><span class="text-slate-400 block">المدى</span><strong class="text-white font-mono text-sm">${range.toFixed(2)}</strong></div>
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 col-span-2 sm:col-span-3"><span class="text-slate-400 block">الانحراف المعياري (SD)</span><strong class="text-violet-400 font-mono text-sm">${stdDev.toFixed(4)}</strong></div>
       `;
     }
 
