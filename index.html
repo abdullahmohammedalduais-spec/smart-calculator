@@ -52,12 +52,11 @@
   <!-- إعلان Adsterra مع سكربت الحماية المتقدم لمنع النوافذ والتحويلات الوهمية -->
   <script type="text/javascript">
     (function() {
-      // حماية صارمة لمنع السكربتات الخارجية الوهمية أو المهكرة (رقم الهاتف، ربحت 1000 دولار)
+      // حماية صارمة لمنع السكربتات الخارجية الوهمية أو المهكرة
       const originalOpen = window.open;
       window.open = function(url, target, features) {
         if (url && typeof url === 'string') {
-          // السماح فقط بروابط Adsterra الموثوقة ومنع النوافذ المنبثقة الخبيثة
-          if (!url.includes('profitableratecpmnetwork.com') && !url.includes('Adsterra')) {
+          if (!url.includes('highrevenueformat.com') && !url.includes('Adsterra')) {
             console.warn('تم حظر نافذة منبثقة خارجية مشبوهة:', url);
             return null;
           }
@@ -65,7 +64,6 @@
         return originalOpen.apply(this, arguments);
       };
 
-      // مراقبة وحظر أي عناصر إعلانية وهمية تحاول الحقن بعبارات خبيثة
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
           mutation.addedNodes.forEach((node) => {
@@ -90,8 +88,8 @@
   <header id="app-header" class="sticky top-0 z-40 w-full backdrop-blur-xl bg-slate-900/95 border-b border-slate-800/80 transition-colors shadow-sm">
     <div class="max-w-7xl mx-auto px-2 sm:px-6 py-2">
       
-      <!-- مكان عرض الإعلان في الشريط العلوي (Banner 320x50) -->
-      <div class="flex justify-center items-center mb-2 overflow-hidden">
+      <!-- مكان عرض الإعلان في الشريط العلوي (Banner 350x20 مستطيل صغير) -->
+      <div class="flex justify-center items-center mb-2 overflow-hidden" style="width: 100%; max-width: 350px; height: 50px; margin-left: auto; margin-right: auto;">
         <script type="text/javascript">
           atOptions = {
             'key' : '919fb78354abf4500f31eaec94147963',
@@ -1236,4 +1234,4 @@
     }
   </script>
 </body>
-              </html>
+</html>
